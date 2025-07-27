@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Billets d'avion{% endblock %}
+{% block page_title %}Liste des billets d'avion{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold">Billets d'avion</span>
+    <a href="{{ path('app_billets_avion_new') }}" class="btn btn-primary btn-sm"><i class="bx bx-plus"></i> Nouveau billet</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Id</th>
+          <th>Nom</th>
+          <th>Prénom</th>
+          <th>Sexe</th>
+          <th>Destination</th>
+          <th>Date départ</th>
+          <th>Date retour</th>
+          <th>Ville départ</th>
+          <th>Ville arrivée</th>
+          <th>Type billet</th>
+          <th>Email</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for billets_avion in billets_avions %}
+        <tr>
+          <td>{{ billets_avion.id }}</td>
+          <td>{{ billets_avion.nom }}</td>
+          <td>{{ billets_avion.prenom }}</td>
+          <td>{{ billets_avion.sexe }}</td>
+          <td>{{ billets_avion.destination }}</td>
+          <td>{{ billets_avion.dateDepart ? billets_avion.dateDepart|date('Y-m-d') : '' }}</td>
+          <td>{{ billets_avion.dateRetour ? billets_avion.dateRetour|date('Y-m-d') : '' }}</td>
+          <td>{{ billets_avion.villeDepart }}</td>
+          <td>{{ billets_avion.villeArrivee }}</td>
+          <td>{{ billets_avion.typeBillet }}</td>
+          <td>{{ billets_avion.email }}</td>
+          <td>
+            <a href="{{ path('app_billets_avion_show', {'id': billets_avion.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>
+            <a href="{{ path('app_billets_avion_edit', {'id': billets_avion.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i></a>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="12" class="text-center text-muted">Aucun billet trouvé</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

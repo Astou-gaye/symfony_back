@@ -1,0 +1,384 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dashboard - Moubarack Voyages{% endblock %}
+
+{% block page_title %}
+    <i class="bx bx-home-circle me-2"></i>Dashboard
+{% endblock %}
+
+{% block body %}
+<!-- Statistiques en haut -->
+<div class="row mb-4 g-3">
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-user fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">Clients Total</div>
+            <div class="fs-2 fw-bold text-primary mb-2 stat-number">2,847</div>
+            <div class="small text-success">
+                <i class="bx bx-up-arrow-alt me-1"></i>+12.5%
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-map fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">Voyages Réservés</div>
+            <div class="fs-2 fw-bold text-info mb-2 stat-number">1,256</div>
+            <div class="small text-success">
+                <i class="bx bx-up-arrow-alt me-1"></i>+8.2%
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-money fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">Revenus du Mois</div>
+            <div class="fs-2 fw-bold text-success mb-2 stat-number">€89,420</div>
+            <div class="small text-success">
+                <i class="bx bx-up-arrow-alt me-1"></i>+15.3%
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-trending-up fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">Taux de Satisfaction</div>
+            <div class="fs-2 fw-bold text-warning mb-2 stat-number">94.8%</div>
+            <div class="small text-success">
+                <i class="bx bx-up-arrow-alt me-1"></i>+2.1%
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Graphiques et activité récente -->
+<div class="row mb-4 g-4">
+    <!-- Graphique des réservations -->
+    <div class="col-lg-8">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white py-4 px-4 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-dark">
+                        <i class="bx bx-line-chart me-2 text-primary"></i>Évolution des Réservations
+                    </h5>
+                    <div class="d-flex gap-2">
+                        <button class="btn btn-sm btn-primary rounded-pill filter-btn active" data-period="7">7 jours</button>
+                        <button class="btn btn-sm btn-outline-primary rounded-pill filter-btn" data-period="30">30 jours</button>
+                        <button class="btn btn-sm btn-outline-primary rounded-pill filter-btn" data-period="90">90 jours</button>
+                    </div>
+                </div>
+            </div>
+            <div class="card-body p-4">
+                <div class="d-flex align-items-center justify-content-center text-muted" style="height: 300px;">
+                    <div class="text-center">
+                        <i class="bx bx-line-chart-down text-primary mb-3" style="font-size: 4rem;"></i>
+                        <h6 class="text-muted">Graphique des Réservations</h6>
+                        <p class="small text-muted mb-0">Les données seront affichées ici</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Activité récente -->
+    <div class="col-lg-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-header bg-white py-4 px-4 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-dark">
+                        <i class="bx bx-time-five me-2 text-primary"></i>Activité Récente
+                    </h5>
+                    <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                        Voir tout
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="activity-item d-flex align-items-center p-4 border-bottom border-light">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: 600; font-size: 0.85rem;">
+                            MK
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <div class="fw-medium text-dark mb-1">Mamadou Kane a réservé un voyage pour Paris</div>
+                        <div class="small text-muted">Il y a 2 heures</div>
+                    </div>
+                </div>
+                
+                <div class="activity-item d-flex align-items-center p-4 border-bottom border-light">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: 600; font-size: 0.85rem;">
+                            AS
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <div class="fw-medium text-dark mb-1">Aicha Sow a effectué un paiement de €1,200</div>
+                        <div class="small text-muted">Il y a 4 heures</div>
+                    </div>
+                </div>
+                
+                <div class="activity-item d-flex align-items-center p-4 border-bottom border-light">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-circle bg-warning text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: 600; font-size: 0.85rem;">
+                            OD
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <div class="fw-medium text-dark mb-1">Omar Diallo a annulé sa réservation</div>
+                        <div class="small text-muted">Il y a 6 heures</div>
+                    </div>
+                </div>
+                
+                <div class="activity-item d-flex align-items-center p-4">
+                    <div class="flex-shrink-0">
+                        <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center" style="width: 40px; height: 40px; font-weight: 600; font-size: 0.85rem;">
+                            FN
+                        </div>
+                    </div>
+                    <div class="flex-grow-1 ms-3">
+                        <div class="fw-medium text-dark mb-1">Fatou Ndiaye s'est inscrite comme nouveau client</div>
+                        <div class="small text-muted">Il y a 8 heures</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Actions rapides -->
+<div class="row mb-4 g-4">
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4 text-center">
+                <div class="mb-3">
+                    <div class="rounded-circle bg-primary bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bx bx-user-plus text-primary fs-3"></i>
+                    </div>
+                </div>
+                <h6 class="fw-bold text-dark mb-2">Nouveau Client</h6>
+                <p class="text-muted small mb-3">Ajouter un nouveau client à votre base de données</p>
+                <a href="#" class="btn btn-primary rounded-pill px-4">
+                    <i class="bx bx-plus me-2"></i>Ajouter
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4 text-center">
+                <div class="mb-3">
+                    <div class="rounded-circle bg-success bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bx bx-calendar-plus text-success fs-3"></i>
+                    </div>
+                </div>
+                <h6 class="fw-bold text-dark mb-2">Nouvelle Réservation</h6>
+                <p class="text-muted small mb-3">Créer une nouvelle réservation de voyage</p>
+                <a href="#" class="btn btn-success rounded-pill px-4">
+                    <i class="bx bx-plus me-2"></i>Réserver
+                </a>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-4">
+        <div class="card border-0 shadow-sm rounded-4 h-100">
+            <div class="card-body p-4 text-center">
+                <div class="mb-3">
+                    <div class="rounded-circle bg-info bg-opacity-10 d-inline-flex align-items-center justify-content-center" style="width: 60px; height: 60px;">
+                        <i class="bx bx-file-blank text-info fs-3"></i>
+                    </div>
+                </div>
+                <h6 class="fw-bold text-dark mb-2">Générer Rapport</h6>
+                <p class="text-muted small mb-3">Créer un rapport détaillé des activités</p>
+                <a href="#" class="btn btn-info rounded-pill px-4">
+                    <i class="bx bx-download me-2"></i>Générer
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Voyages populaires -->
+<div class="row">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white py-4 px-4 border-bottom">
+                <div class="d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold text-dark">
+                        <i class="bx bx-trending-up me-2 text-primary"></i>Voyages Populaires
+                    </h5>
+                    <a href="#" class="btn btn-sm btn-outline-primary rounded-pill">
+                        Voir tous les voyages
+                    </a>
+                </div>
+            </div>
+            <div class="card-body p-0">
+                <div class="table-responsive">
+                    <table class="table table-hover align-middle mb-0">
+                        <thead class="table-light">
+                            <tr>
+                                <th class="ps-4 py-3 border-0 fw-semibold text-muted text-uppercase small">Destination</th>
+                                <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Type</th>
+                                <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Réservations</th>
+                                <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Prix</th>
+                                <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Statut</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr class="border-bottom border-light">
+                                <td class="ps-4 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="rounded-3 bg-primary bg-opacity-10 p-2">
+                                            <i class="bx bx-mosque text-primary fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold text-dark">La Mecque</div>
+                                            <div class="small text-muted">Arabie Saoudite</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 fw-medium">
+                                        Hajj
+                                    </span>
+                                </td>
+                                <td class="py-3">
+                                    <div class="fw-medium text-dark">847</div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="fw-bold text-success">€3,200</div>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 fw-medium">
+                                        Disponible
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr class="border-bottom border-light">
+                                <td class="ps-4 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="rounded-3 bg-info bg-opacity-10 p-2">
+                                            <i class="bx bx-mosque text-info fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold text-dark">Médine</div>
+                                            <div class="small text-muted">Arabie Saoudite</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-primary bg-opacity-10 text-primary rounded-pill px-3 py-2 fw-medium">
+                                        Omra
+                                    </span>
+                                </td>
+                                <td class="py-3">
+                                    <div class="fw-medium text-dark">623</div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="fw-bold text-success">€1,850</div>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-success bg-opacity-10 text-success rounded-pill px-3 py-2 fw-medium">
+                                        Disponible
+                                    </span>
+                                </td>
+                            </tr>
+                            <tr>
+                                <td class="ps-4 py-3">
+                                    <div class="d-flex align-items-center gap-3">
+                                        <div class="rounded-3 bg-danger bg-opacity-10 p-2">
+                                            <i class="bx bx-building text-danger fs-5"></i>
+                                        </div>
+                                        <div>
+                                            <div class="fw-semibold text-dark">Paris</div>
+                                            <div class="small text-muted">France</div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-secondary bg-opacity-10 text-secondary rounded-pill px-3 py-2 fw-medium">
+                                        Tourisme
+                                    </span>
+                                </td>
+                                <td class="py-3">
+                                    <div class="fw-medium text-dark">234</div>
+                                </td>
+                                <td class="py-3">
+                                    <div class="fw-bold text-success">€950</div>
+                                </td>
+                                <td class="py-3">
+                                    <span class="badge bg-warning bg-opacity-10 text-warning rounded-pill px-3 py-2 fw-medium">
+                                        Limité
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+<script>
+    // Interactive elements
+    document.addEventListener('DOMContentLoaded', function() {
+        // Filter buttons
+        const filterBtns = document.querySelectorAll('.filter-btn');
+        filterBtns.forEach(btn => {
+            btn.addEventListener('click', function() {
+                filterBtns.forEach(b => {
+                    b.classList.remove('active');
+                    b.classList.remove('btn-primary');
+                    b.classList.add('btn-outline-primary');
+                });
+                this.classList.add('active');
+                this.classList.remove('btn-outline-primary');
+                this.classList.add('btn-primary');
+            });
+        });
+
+        // Stats counter animation
+        function animateCounter(element, target) {
+            let current = 0;
+            const increment = target / 100;
+            const timer = setInterval(() => {
+                current += increment;
+                if (current >= target) {
+                    current = target;
+                    clearInterval(timer);
+                }
+                
+                if (element.textContent.includes('€')) {
+                    element.textContent = '€' + Math.floor(current).toLocaleString();
+                } else if (element.textContent.includes('%')) {
+                    element.textContent = current.toFixed(1) + '%';
+                } else {
+                    element.textContent = Math.floor(current).toLocaleString();
+                }
+            }, 20);
+        }
+
+        // Trigger counter animations
+        setTimeout(() => {
+            const statNumbers = document.querySelectorAll('.stat-number');
+            animateCounter(statNumbers[0], 2847);
+            animateCounter(statNumbers[1], 1256);
+            animateCounter(statNumbers[2], 89420);
+            animateCounter(statNumbers[3], 94.8);
+        }, 500);
+    });
+</script>
+{% endblock %}

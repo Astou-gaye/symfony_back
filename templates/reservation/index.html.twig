@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Réservations{% endblock %}
+{% block page_title %}Liste des réservations{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold">Réservations</span>
+    <a href="{{ path('app_reservation_new') }}" class="btn btn-primary btn-sm"><i class="bx bx-plus"></i> Nouvelle réservation</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Id</th>
+          <th>Date réservation</th>
+          <th>Montant versé</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for reservation in reservations %}
+        <tr>
+          <td>{{ reservation.id }}</td>
+          <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d') : '' }}</td>
+          <td>{{ reservation.montantVersement }}</td>
+          <td>
+            <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>
+            <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i></a>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="4" class="text-center text-muted">Aucune réservation trouvée</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

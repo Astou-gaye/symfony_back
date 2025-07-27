@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Paiements{% endblock %}
+{% block page_title %}Liste des paiements{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold">Paiements</span>
+    <a href="{{ path('app_paiement_new') }}" class="btn btn-primary btn-sm"><i class="bx bx-plus"></i> Nouveau paiement</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Id</th>
+          <th>Montant payé</th>
+          <th>Date paiement</th>
+          <th>Mode paiement</th>
+          <th>Status paiement</th>
+          <th>Reçu</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for paiement in paiements %}
+        <tr>
+          <td>{{ paiement.id }}</td>
+          <td>{{ paiement.montantPaye }}</td>
+          <td>{{ paiement.datePaiement ? paiement.datePaiement|date('Y-m-d') : '' }}</td>
+          <td>{{ paiement.modePaiement }}</td>
+          <td>{{ paiement.statusPaiement }}</td>
+          <td>{{ paiement.recu }}</td>
+          <td>
+            <a href="{{ path('app_paiement_show', {'id': paiement.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>
+            <a href="{{ path('app_paiement_edit', {'id': paiement.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i></a>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="7" class="text-center text-muted">Aucun paiement trouvé</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

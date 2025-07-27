@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouvel utilisateur{% endblock %}
+{% block page_title %}Créer un utilisateur{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold">Création utilisateur</span>
+    <a href="{{ path('app_user_index') }}" class="btn btn-sm btn-outline-primary"><i class="bx bx-arrow-back"></i> Retour</a>
+  </div>
+  <div class="card-body">
+    {{ include('user/_form.html.twig') }}
+  </div>
+</div>
+{% endblock %}

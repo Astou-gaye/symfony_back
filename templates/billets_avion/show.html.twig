@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Billet d'avion{% endblock %}
+{% block page_title %}Détail billet d'avion{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold">Informations billet d'avion</span>
+    <div>
+      <a href="{{ path('app_billets_avion_edit', {'id': billets_avion.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i> Modifier</a>
+      <a href="{{ path('app_billets_avion_index') }}" class="btn btn-sm btn-outline-primary"><i class="bx bx-arrow-back"></i> Retour</a>
+    </div>
+  </div>
+  <div class="card-body">
+    <table class="table mb-0">
+      <tbody>
+        <tr><th>Id</th><td>{{ billets_avion.id }}</td></tr>
+        <tr><th>Nom</th><td>{{ billets_avion.nom }}</td></tr>
+        <tr><th>Prénom</th><td>{{ billets_avion.prenom }}</td></tr>
+        <tr><th>Sexe</th><td>{{ billets_avion.sexe }}</td></tr>
+        <tr><th>Destination</th><td>{{ billets_avion.destination }}</td></tr>
+        <tr><th>Date départ</th><td>{{ billets_avion.dateDepart ? billets_avion.dateDepart|date('Y-m-d') : '' }}</td></tr>
+        <tr><th>Date retour</th><td>{{ billets_avion.dateRetour ? billets_avion.dateRetour|date('Y-m-d') : '' }}</td></tr>
+        <tr><th>Ville départ</th><td>{{ billets_avion.villeDepart }}</td></tr>
+        <tr><th>Ville arrivée</th><td>{{ billets_avion.villeArrivee }}</td></tr>
+        <tr><th>Type billet</th><td>{{ billets_avion.typeBillet }}</td></tr>
+        <tr><th>Email</th><td>{{ billets_avion.email }}</td></tr>
+      </tbody>
+    </table>
+    <div class="mt-3">
+      {{ include('billets_avion/_delete_form.html.twig') }}
+    </div>
+  </div>
+</div>
+{% endblock %}

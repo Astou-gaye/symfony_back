@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Dossiers{% endblock %}
+{% block page_title %}Liste des dossiers{% endblock %}
+{% block body %}
+<div class="card">
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <span class="fw-bold">Dossiers</span>
+    <a href="{{ path('app_dossiers_new') }}" class="btn btn-primary btn-sm"><i class="bx bx-plus"></i> Nouveau dossier</a>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover align-middle mb-0">
+      <thead class="table-light">
+        <tr>
+          <th>Id</th>
+          <th>Passeport</th>
+          <th>Visa</th>
+          <th>Carnet santé</th>
+          <th>Photo identité</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+      {% for dossier in dossiers %}
+        <tr>
+          <td>{{ dossier.id }}</td>
+          <td>{{ dossier.passeport }}</td>
+          <td>{{ dossier.visa }}</td>
+          <td>{{ dossier.carnetSante }}</td>
+          <td>{{ dossier.photoIdentite }}</td>
+          <td>
+            <a href="{{ path('app_dossiers_show', {'id': dossier.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>
+            <a href="{{ path('app_dossiers_edit', {'id': dossier.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i></a>
+          </td>
+        </tr>
+      {% else %}
+        <tr>
+          <td colspan="6" class="text-center text-muted">Aucun dossier trouvé</td>
+        </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}
