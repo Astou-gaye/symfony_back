@@ -17,7 +17,6 @@ class BilletsAvionType extends AbstractType
             ->add('nom')
             ->add('prenom')
             ->add('sexe')
-            ->add('destination')
             ->add('dateDepart')
             ->add('dateRetour')
             ->add('villeDepart')

@@ -16,16 +16,13 @@ class ReservationType extends AbstractType
     {
         $builder
             ->add('dateReservation')
-            ->add('montantVersement')
+            ->add('type')
+            ->add('status')
             ->add('client', EntityType::class, [
                 'class' => Client::class,
-                'choice_label' => 'id',
-            ])
-            ->add('session', EntityType::class, [
-                'class' => Session::class,
-                'choice_label' => 'id',
-            ])
-        ;
+                'choice_label' => 'prenom',
+            ]);
+        
     }
 
     public function configureOptions(OptionsResolver $resolver): void

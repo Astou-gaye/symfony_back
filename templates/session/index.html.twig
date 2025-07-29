@@ -17,6 +17,7 @@
           <th>Date début</th>
           <th>Date fin</th>
           <th>Prix forfait</th>
+          <th>Voyage</th>
           <th>Date inscription</th>
           <th>Actions</th>
         </tr>
@@ -29,6 +30,7 @@
           <td>{{ session.dateDebut ? session.dateDebut|date('Y-m-d') : '' }}</td>
           <td>{{ session.dateFin ? session.dateFin|date('Y-m-d') : '' }}</td>
           <td>{{ session.prixForfait }}</td>
+          <td>{{ session.voyage.typeVoyage }}</td>
           <td>{{ session.dateInscription ? session.dateInscription|date('Y-m-d') : '' }}</td>
           <td>
             <a href="{{ path('app_session_show', {'id': session.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>

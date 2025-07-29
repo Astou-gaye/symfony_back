@@ -5,52 +5,54 @@ namespace App\Entity;
 use App\Repository\BilletsAvionRepository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\ORM\Mapping\JoinColumn;
 
 #[ORM\Entity(repositoryClass: BilletsAvionRepository::class)]
+#[ORM\Table(name: 'billets_avion')]
 class BilletsAvion
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
-    #[ORM\Column]
+    #[ORM\Column(type: Types::INTEGER)]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $prenom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 10, options: ['comment' => "ENUM('M', 'F')"])]
     private ?string $sexe = null;
-
-    #[ORM\Column(length: 255)]
-    private ?string $destination = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
     private ?\DateTime $dateDepart = null;
 
-    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    #[ORM\Column(type: Types::DATE_MUTABLE, nullable: true)]
     private ?\DateTime $dateRetour = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $villeDepart = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $villeArrivee = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $typeBillet = null;
+    #[ORM\Column(type: Types::STRING, length: 100)]
+    private ?string $type = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: Types::STRING, length: 255)]
     private ?string $email = null;
 
-    #[ORM\ManyToOne(inversedBy: 'billetsAvions')]
+    #[ORM\ManyToOne(targetEntity: Client::class, inversedBy: 'billetsAvions')]
+    #[ORM\JoinColumn(nullable: true)]
     private ?Client $client = null;
 
     public function getId(): ?int
     {
         return $this->id;
     }
+
+
 
     public function getNom(): ?string
     {
@@ -60,7 +62,6 @@ class BilletsAvion
     public function setNom(string $nom): static
     {
         $this->nom = $nom;
-
         return $this;
     }
 
@@ -72,7 +73,6 @@ class BilletsAvion
     public function setPrenom(string $prenom): static
     {
         $this->prenom = $prenom;
-
         return $this;
     }
 
@@ -84,19 +84,6 @@ class BilletsAvion
     public function setSexe(string $sexe): static
     {
         $this->sexe = $sexe;
-
-        return $this;
-    }
-
-    public function getDestination(): ?string
-    {
-        return $this->destination;
-    }
-
-    public function setDestination(string $destination): static
-    {
-        $this->destination = $destination;
-
         return $this;
     }
 
@@ -108,7 +95,6 @@ class BilletsAvion
     public function setDateDepart(\DateTime $dateDepart): static
     {
         $this->dateDepart = $dateDepart;
-
         return $this;
     }
 
@@ -117,10 +103,9 @@ class BilletsAvion
         return $this->dateRetour;
     }
 
-    public function setDateRetour(\DateTime $dateRetour): static
+    public function setDateRetour(?\DateTime $dateRetour): static
     {
         $this->dateRetour = $dateRetour;
-
         return $this;
     }
 
@@ -132,7 +117,6 @@ class BilletsAvion
     public function setVilleDepart(string $villeDepart): static
     {
         $this->villeDepart = $villeDepart;
-
         return $this;
     }
 
@@ -144,19 +128,17 @@ class BilletsAvion
     public function setVilleArrivee(string $villeArrivee): static
     {
         $this->villeArrivee = $villeArrivee;
-
         return $this;
     }
 
-    public function getTypeBillet(): ?string
+    public function getType(): ?string
     {
-        return $this->typeBillet;
+        return $this->type;
     }
 
-    public function setTypeBillet(string $typeBillet): static
+    public function setType(string $type): static
     {
-        $this->typeBillet = $typeBillet;
-
+        $this->type = $type;
         return $this;
     }
 
@@ -168,7 +150,6 @@ class BilletsAvion
     public function setEmail(string $email): static
     {
         $this->email = $email;
-
         return $this;
     }
 
@@ -180,7 +161,6 @@ class BilletsAvion
     public function setClient(?Client $client): static
     {
         $this->client = $client;
-
         return $this;
     }
 }

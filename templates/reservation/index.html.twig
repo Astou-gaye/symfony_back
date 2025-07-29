@@ -14,7 +14,9 @@
         <tr>
           <th>Id</th>
           <th>Date réservation</th>
-          <th>Montant versé</th>
+          <th>Client</th>
+          <th>Type</th>
+          <th>Status</th>
           <th>Actions</th>
         </tr>
       </thead>
@@ -23,7 +25,9 @@
         <tr>
           <td>{{ reservation.id }}</td>
           <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d') : '' }}</td>
-          <td>{{ reservation.montantVersement }}</td>
+          <td>{{ reservation.client.prenom }}</td>
+          <td>{{ reservation.type }}</td>
+          <td>{{ reservation.status }}</td>
           <td>
             <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>
             <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i></a>
