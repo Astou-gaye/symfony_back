@@ -36,7 +36,7 @@
           <td>{{ billets_avion.dateRetour ? billets_avion.dateRetour|date('Y-m-d') : '' }}</td>
           <td>{{ billets_avion.villeDepart }}</td>
           <td>{{ billets_avion.villeArrivee }}</td>
-          <td>{{ billets_avion.typeBillet }}</td>
+          <td>{{ billets_avion.type }}</td>
           <td>{{ billets_avion.email }}</td>
           <td>
             <a href="{{ path('app_billets_avion_show', {'id': billets_avion.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>

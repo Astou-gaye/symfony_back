@@ -25,7 +25,7 @@
         <tr>
           <td>{{ reservation.id }}</td>
           <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d') : '' }}</td>
-          <td>{{ reservation.client.prenom }}</td>
+          <td>{{ reservation.client.prenom}} {{ reservation.client.nom }}</td>
           <td>{{ reservation.type }}</td>
           <td>{{ reservation.status }}</td>
           <td>

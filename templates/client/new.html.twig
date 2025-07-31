@@ -216,6 +216,39 @@
                     </div>
                   </div>
                 </div>
+
+                <!-- Telephone -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-map-pin text-primary me-1"></i>
+                      Telephone <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.telephone, {
+                      'attr': {
+                        'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                        'placeholder': 'Entrez le numéro de téléphone',
+                        'rows': 3,
+                        'required': true
+                      }
+                    }) }}
+
+                <!-- Email -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-map-pin text-primary me-1"></i>
+                      Email <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.email, {
+                      'attr': {
+                        'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                        'placeholder': 'Entrez l\'adresse email',
+                        'rows': 3,
+                        'required': true
+                      }
+                    }) }}
+
               </div>
 
               <!-- Boutons d'action -->

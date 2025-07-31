@@ -131,6 +131,8 @@
                         <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Naissance</th>
                         <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Nationalité</th>
                         <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Sexe</th>
+                        <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Telephone</th>
+                        <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Email</th>
                         <th class="py-3 border-0 fw-semibold text-muted text-uppercase small text-center">Actions</th>
                     </tr>
                 </thead>
@@ -214,6 +216,21 @@
                                 {% endif %}
                             {% endif %}
                         </td>
+
+                        <td class="py-3">
+                            <span class="badge bg-light border text-dark rounded-pill px-3 py-2 fw-medium">
+                                <i class="bx bx-flag me-1"></i>
+                                {{ client.telephone ?: '770000000' }}
+                            </span>
+                        </td>
+
+                        <td class="py-3">
+                            <span class="badge bg-light border text-dark rounded-pill px-3 py-2 fw-medium">
+                                <i class="bx bx-flag me-1"></i>
+                                {{ client.email ?: 'moubarack@gmail.com' }}
+                            </span>
+                        </td>
+
                         <td class="py-3 text-center">
                             <div class="d-flex justify-content-center gap-1">
                                 <a href="{{ path('app_client_show', {'id': client.id}) }}"

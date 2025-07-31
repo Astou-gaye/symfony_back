@@ -169,6 +169,40 @@
               </div>
             </div>
 
+             <div class="row mt-4">
+            <!-- Telephone -->
+            <div class="col-md-4">
+              <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                  <i class="bx bx-phone fs-1"></i>
+                </div>
+                <div class="text-muted small mb-2 fw-medium text-uppercase">Telephone</div>
+                <div class="mb-3">
+                  <span class="badge bg-light border text-dark rounded-pill px-3 py-2 fw-medium fs-6">
+                    <i class="bx bx-phone me-2"></i>
+                    {{ client.telephone ?: '770000000' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+
+            <!-- Email -->
+            <div class="col-md-4">
+              <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                  <i class="bx bx-envelope fs-1"></i>
+                </div>
+                <div class="text-muted small mb-2 fw-medium text-uppercase">Email</div>
+                <div class="mb-3">
+                  <span class="badge bg-light border text-dark rounded-pill px-3 py-2 fw-medium fs-6">
+                    <i class="bx bx-envelope me-3"></i>
+                    {{ client.email ?: 'moubarack@gmail.com' }}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+
             <!-- Sidebar avec actions -->
             <div class="col-lg-4">
               <div class="sticky-top" style="top: 2rem;">

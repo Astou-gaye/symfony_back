@@ -18,6 +18,10 @@ class ClientType extends AbstractType
             ->add('dateNaissance')
             ->add('nationalite')
             ->add('sexe')
+            ->add('telephone')
+            ->add('email')
+
+
         ;
     }
 

@@ -18,12 +18,11 @@
         <tr><th>Nom</th><td>{{ billets_avion.nom }}</td></tr>
         <tr><th>Prénom</th><td>{{ billets_avion.prenom }}</td></tr>
         <tr><th>Sexe</th><td>{{ billets_avion.sexe }}</td></tr>
-        <tr><th>Destination</th><td>{{ billets_avion.destination }}</td></tr>
         <tr><th>Date départ</th><td>{{ billets_avion.dateDepart ? billets_avion.dateDepart|date('Y-m-d') : '' }}</td></tr>
         <tr><th>Date retour</th><td>{{ billets_avion.dateRetour ? billets_avion.dateRetour|date('Y-m-d') : '' }}</td></tr>
         <tr><th>Ville départ</th><td>{{ billets_avion.villeDepart }}</td></tr>
         <tr><th>Ville arrivée</th><td>{{ billets_avion.villeArrivee }}</td></tr>
-        <tr><th>Type billet</th><td>{{ billets_avion.typeBillet }}</td></tr>
+        <tr><th>Type billet</th><td>{{ billets_avion.type}}</td></tr>
         <tr><th>Email</th><td>{{ billets_avion.email }}</td></tr>
       </tbody>
     </table>

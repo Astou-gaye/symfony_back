@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\ReservationRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -9,6 +10,7 @@ use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ReservationRepository::class)]
+#[ApiResource]
 class Reservation
 {
     #[ORM\Id]
@@ -17,14 +19,16 @@ class Reservation
     private ?int $id = null;
 
     #[ORM\Column(type: Types::DATE_MUTABLE)]
-    private ?\DateTime $dateReservation = null;
+    private ?\DateTimeInterface $dateReservation = null;
 
     #[ORM\ManyToOne(inversedBy: 'reservations')]
+    #[ORM\JoinColumn(nullable: false)]
     private ?Client $client = null;
+
     /**
      * @var Collection<int, Paiement>
      */
-    #[ORM\OneToMany(targetEntity: Paiement::class, mappedBy: 'reservation')]
+    #[ORM\OneToMany(targetEntity: Paiement::class, mappedBy: 'reservation', orphanRemoval: true)]
     private Collection $paiement;
 
     #[ORM\Column(length: 255)]
@@ -32,6 +36,30 @@ class Reservation
 
     #[ORM\Column(length: 255)]
     private ?string $status = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $nom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $prenom = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $adresse = null;
+
+    #[ORM\Column(length: 20)]
+    private ?string $telephone = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $email = null;
+
+    #[ORM\Column(length: 100)]
+    private ?string $nationalite = null;
+
+    #[ORM\Column(length: 10)]
+    private ?string $sexe = null;
+
+    #[ORM\Column(type: Types::DATE_MUTABLE)]
+    private ?\DateTimeInterface $dateNaissance = null;
 
     public function __construct()
     {
@@ -43,17 +71,17 @@ class Reservation
         return $this->id;
     }
 
-    public function getDateReservation(): ?\DateTime
+    public function getDateReservation(): ?\DateTimeInterface
     {
         return $this->dateReservation;
     }
 
-    public function setDateReservation(\DateTime $dateReservation): static
+    public function setDateReservation(\DateTimeInterface $dateReservation): static
     {
         $this->dateReservation = $dateReservation;
-
         return $this;
     }
+
     public function getClient(): ?Client
     {
         return $this->client;
@@ -62,13 +90,9 @@ class Reservation
     public function setClient(?Client $client): static
     {
         $this->client = $client;
-
         return $this;
     }
 
-    /**
-     * @return Collection<int, Paiement>
-     */
     public function getPaiement(): Collection
     {
         return $this->paiement;
@@ -87,7 +111,6 @@ class Reservation
     public function removePaiement(Paiement $paiement): static
     {
         if ($this->paiement->removeElement($paiement)) {
-            // set the owning side to null (unless already changed)
             if ($paiement->getReservation() === $this) {
                 $paiement->setReservation(null);
             }
@@ -104,7 +127,6 @@ class Reservation
     public function setType(string $type): static
     {
         $this->type = $type;
-
         return $this;
     }
 
@@ -116,7 +138,94 @@ class Reservation
     public function setStatus(string $status): static
     {
         $this->status = $status;
+        return $this;
+    }
 
+    public function getNom(): ?string
+    {
+        return $this->nom;
+    }
+
+    public function setNom(string $nom): static
+    {
+        $this->nom = $nom;
+        return $this;
+    }
+
+    public function getPrenom(): ?string
+    {
+        return $this->prenom;
+    }
+
+    public function setPrenom(string $prenom): static
+    {
+        $this->prenom = $prenom;
+        return $this;
+    }
+
+    public function getAdresse(): ?string
+    {
+        return $this->adresse;
+    }
+
+    public function setAdresse(string $adresse): static
+    {
+        $this->adresse = $adresse;
+        return $this;
+    }
+
+    public function getTelephone(): ?string
+    {
+        return $this->telephone;
+    }
+
+    public function setTelephone(string $telephone): static
+    {
+        $this->telephone = $telephone;
+        return $this;
+    }
+
+    public function getEmail(): ?string
+    {
+        return $this->email;
+    }
+
+    public function setEmail(string $email): static
+    {
+        $this->email = $email;
+        return $this;
+    }
+
+    public function getNationalite(): ?string
+    {
+        return $this->nationalite;
+    }
+
+    public function setNationalite(string $nationalite): static
+    {
+        $this->nationalite = $nationalite;
+        return $this;
+    }
+
+    public function getSexe(): ?string
+    {
+        return $this->sexe;
+    }
+
+    public function setSexe(string $sexe): static
+    {
+        $this->sexe = $sexe;
+        return $this;
+    }
+
+    public function getDateNaissance(): ?\DateTimeInterface
+    {
+        return $this->dateNaissance;
+    }
+
+    public function setDateNaissance(?\DateTimeInterface $dateNaissance): static
+    {
+        $this->dateNaissance = $dateNaissance;
         return $this;
     }
 }
