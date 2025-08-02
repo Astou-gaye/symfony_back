@@ -1,15 +1,120 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouveau voyage{% endblock %}
-{% block page_title %}Créer un voyage{% endblock %}
+{% block title %}Nouveau voyage - Moubarack Voyages{% endblock %}
+
+{% block page_title %}
+    <i class="bx bx-plus me-2"></i>Créer un voyage
+{% endblock %}
+
 {% block body %}
-<div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-bold">Création voyage</span>
-    <a href="{{ path('app_voyage_index') }}" class="btn btn-sm btn-outline-primary"><i class="bx bx-arrow-back"></i> Retour</a>
-  </div>
-  <div class="card-body">
-    {{ include('voyage/_form.html.twig') }}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header avec breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item"><a href="{{ path('app_voyage_index') }}" class="text-decoration-none">Voyages</a></li>
+              <li class="breadcrumb-item active">Nouveau voyage</li>
+            </ol>
+          </nav>
+          <h4 class="mb-0 fw-bold text-dark">
+            <i class="bx bx-plus text-primary me-2"></i>
+            Nouveau voyage
+          </h4>
+        </div>
+        <div>
+          <a href="{{ path('app_voyage_index') }}" 
+             class="btn btn-outline-secondary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-arrow-back me-2"></i>Retour à la liste
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Formulaire principal -->
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white py-4 px-4 border-bottom">
+              <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                  <i class="bx bx-map-marked-alt text-primary fs-3"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1 fw-bold text-dark">
+                    Informations du nouveau voyage
+                  </h5>
+                  <p class="text-muted small mb-0">Remplissez tous les champs obligatoires</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body p-4">
+              {{ include('voyage/_form.html.twig') }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar d'aide -->
+        <div class="col-lg-4">
+          <div class="sticky-top" style="top: 2rem;">
+            <!-- Conseils -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-lightbulb text-warning me-2"></i>
+                  Conseils de saisie
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="small">
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-world text-primary me-1"></i>Destination
+                    </div>
+                    <div class="text-muted">Soyez précis avec le nom de la destination</div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-category text-primary me-1"></i>Type de voyage
+                    </div>
+                    <div class="text-muted">Choisissez le type approprié (Hajj, Omra, Tourisme, etc.)</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Types de voyage populaires -->
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-star text-success me-2"></i>
+                  Types populaires
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="d-grid gap-2">
+                  <div class="bg-success bg-opacity-10 rounded-3 p-2 text-center">
+                    <i class="bx bx-home-heart text-success me-1"></i>
+                    <span class="fw-semibold">Hajj</span>
+                  </div>
+                  <div class="bg-info bg-opacity-10 rounded-3 p-2 text-center">
+                    <i class="bx bx-home-smile text-info me-1"></i>
+                    <span class="fw-semibold">Omra</span>
+                  </div>
+                  <div class="bg-primary bg-opacity-10 rounded-3 p-2 text-center">
+                    <i class="bx bx-map text-primary me-1"></i>
+                    <span class="fw-semibold">Tourisme</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 {% endblock %}

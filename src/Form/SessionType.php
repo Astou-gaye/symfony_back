@@ -21,7 +21,7 @@ class SessionType extends AbstractType
             ->add('dateInscription')
             ->add('voyage', EntityType::class, [
                 'class' => Voyage::class,
-                'choice_label' => 'id',
+                'choice_label' => 'typeVoyage',
             ])
         ;
     }

@@ -1,42 +1,287 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Session{% endblock %}
+{% block title %}Session - Moubarack Voyages{% endblock %}
+{% block page_title %}<i class="bx bx-calendar-event me-2"></i>Détail Session{% endblock %}
 
 {% block body %}
-    <h1>Session</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header avec breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item"><a href="{{ path('app_session_index') }}" class="text-decoration-none">Sessions</a></li>
+              <li class="breadcrumb-item active">Session #{{ session.id }}</li>
+            </ol>
+          </nav>
+          <h4 class="mb-0 fw-bold text-dark">
+            <i class="bx bx-calendar-event text-primary me-2"></i>
+            Session #{{ session.id }}
+          </h4>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="{{ path('app_session_edit', {'id': session.id}) }}" 
+             class="btn btn-outline-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-edit me-2"></i>Modifier
+          </a>
+          <a href="{{ path('app_session_index') }}" 
+             class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-arrow-back me-2"></i>Retour
+          </a>
+        </div>
+      </div>
 
-    <table class="table">
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ session.id }}</td>
-            </tr>
-            <tr>
-                <th>NombresPlaces</th>
-                <td>{{ session.nombresPlaces }}</td>
-            </tr>
-            <tr>
-                <th>DateDebut</th>
-                <td>{{ session.dateDebut ? session.dateDebut|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>DateFin</th>
-                <td>{{ session.dateFin ? session.dateFin|date('Y-m-d') : '' }}</td>
-            </tr>
-            <tr>
-                <th>PrixForfait</th>
-                <td>{{ session.prixForfait }}</td>
-            </tr>
-            <tr>
-                <th>DateInscription</th>
-                <td>{{ session.dateInscription ? session.dateInscription|date('Y-m-d') : '' }}</td>
-            </tr>
-        </tbody>
-    </table>
+      <!-- Carte principale -->
+      <div class="card border-0 shadow-sm rounded-4">
+        <!-- Header de la carte avec avatar -->
+        <div class="card-header bg-white py-4 px-4 border-bottom">
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <div class="position-relative">
+                <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 80px; height: 80px; font-weight: 600; font-size: 1.2rem;">
+                   #{{ session.id }}
+                </div>
+                <div class="position-absolute bottom-0 end-0 bg-success rounded-circle border-3 border-white" style="width: 20px; height: 20px;"></div>
+              </div>
+            </div>
+            <div class="col">
+              <h5 class="mb-1 fw-bold text-dark">Session #{{ session.id }}</h5>
+              <p class="mb-1 text-muted">
+                <i class="bx bx-map me-1"></i>
+                {{ session.voyage ? session.voyage.typeVoyage : 'Voyage non défini' }}
+              </p>
+              <p class="mb-0 text-muted small">
+                <i class="bx bx-calendar me-1"></i>
+                Créée le {{ session.dateInscription ? session.dateInscription|date('d/m/Y') : 'Date non définie' }}
+              </p>
+            </div>
+            <div class="col-auto">
+              <div class="d-flex align-items-center">
+                <div class="bg-warning bg-opacity-10 rounded-3 p-3 me-3">
+                  <i class="bx bx-group text-warning fs-2"></i>
+                </div>
+                <div>
+                  <div class="fw-bold text-dark">{{ session.nombresPlaces ?: '0' }} places</div>
+                  <div class="small text-muted">Disponibles</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
 
-    <a href="{{ path('app_session_index') }}">back to list</a>
+        <div class="card-body p-4">
+          <div class="row g-4">
+            <!-- Informations principales -->
+            <div class="col-lg-8">
+              <h6 class="text-uppercase text-muted fw-bold mb-4 border-bottom pb-2">
+                <i class="bx bx-info-circle text-primary me-2"></i>
+                Informations de la session
+              </h6>
+              
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-id-card fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">ID Session</div>
+                    <div class="fs-4 fw-bold text-primary mb-0">#{{ session.id }}</div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-group fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Nombre de places</div>
+                    <div class="fs-4 fw-bold text-warning mb-0">{{ session.nombresPlaces ?: '0' }}</div>
+                  </div>
+                </div>
+                
+                <div class="col-12">
+                  <div class="border-0 shadow-sm rounded-4 p-4 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-map fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">
+                      <i class="bx bx-map-pin me-1"></i>Voyage Associé
+                    </div>
+                    <div class="fs-5 fw-bold text-dark">{{ session.voyage ? session.voyage.typeVoyage : 'Aucun voyage associé' }}</div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-calendar-check fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Date de début</div>
+                    {% if session.dateDebut %}
+                      <div class="fs-5 fw-bold text-success mb-1">{{ session.dateDebut|date('d/m/Y') }}</div>
+                      <div class="small text-muted">
+                        <i class="bx bx-time me-1"></i>{{ session.dateDebut|date('H:i') }}
+                      </div>
+                    {% else %}
+                      <div class="fs-5 fw-bold text-muted mb-1">Non définie</div>
+                      <div class="small text-muted">À planifier</div>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-calendar-x fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Date de fin</div>
+                    {% if session.dateFin %}
+                      <div class="fs-5 fw-bold text-danger mb-1">{{ session.dateFin|date('d/m/Y') }}</div>
+                      <div class="small text-muted">
+                        <i class="bx bx-time me-1"></i>{{ session.dateFin|date('H:i') }}
+                      </div>
+                    {% else %}
+                      <div class="fs-5 fw-bold text-muted mb-1">Non définie</div>
+                      <div class="small text-muted">À planifier</div>
+                    {% endif %}
+                  </div>
+                </div>
+              </div>
 
-    <a href="{{ path('app_session_edit', {'id': session.id}) }}">edit</a>
+              <div class="row mt-4">
+                <!-- Prix forfait -->
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-money fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Prix forfait</div>
+                    <div class="mb-3">
+                      <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-4 py-3 fw-bold fs-5">
+                        <i class="bx bx-money me-2"></i>
+                        {{ session.prixForfait ? (session.prixForfait|number_format(0, ',', ' ')) ~ ' CFA' : 'Prix non défini' }}
+                      </span>
+                    </div>
+                  </div>
+                </div>
 
-    {{ include('session/_delete_form.html.twig') }}
+                <!-- Date d'inscription -->
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-calendar-plus fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Date d'inscription</div>
+                    <div class="mb-3">
+                      {% if session.dateInscription %}
+                        <div class="fs-5 fw-bold text-info mb-1">{{ session.dateInscription|date('d/m/Y') }}</div>
+                        <div class="small text-muted">
+                          <i class="bx bx-time me-1"></i>{{ session.dateInscription|date('H:i') }}
+                        </div>
+                      {% else %}
+                        <div class="fs-5 fw-bold text-muted">Non renseignée</div>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Sidebar avec actions -->
+            <div class="col-lg-4">
+              <div class="sticky-top" style="top: 2rem;">
+                <h6 class="text-uppercase text-muted fw-bold mb-4 border-bottom pb-2">
+                  <i class="bx bx-cog text-primary me-2"></i>
+                  Actions
+                </h6>
+                
+                <div class="d-grid gap-3">
+                  <a href="{{ path('app_session_edit', {'id': session.id}) }}" 
+                     class="btn btn-primary shadow-sm rounded-3 px-4 py-3 fw-semibold">
+                    <i class="bx bx-edit me-2"></i>
+                    Modifier la session
+                  </a>
+                  
+                  <a href="{{ path('app_session_index') }}" 
+                     class="btn btn-outline-secondary shadow-sm rounded-3 px-4 py-3 fw-semibold">
+                    <i class="bx bx-list-ul me-2"></i>
+                    Liste des sessions
+                  </a>
+                  
+                  <!-- Statistiques rapides -->
+                  <div class="border-0 shadow-sm rounded-4 p-4 position-relative overflow-hidden bg-light mt-3">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-stats fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Statistiques rapides</div>
+                    {% if session.dateDebut and session.dateFin %}
+                      {% set duration = session.dateFin.diff(session.dateDebut).days %}
+                      <div class="small mb-2">
+                        <strong class="text-dark">Durée:</strong> {{ duration }} jour{{ duration > 1 ? 's' : '' }}
+                      </div>
+                    {% endif %}
+                    <div class="small mb-2">
+                      <strong class="text-dark">Capacité:</strong> {{ session.nombresPlaces ?: '0' }} places
+                    </div>
+                    {% if session.prixForfait and session.nombresPlaces %}
+                      <div class="small mb-2">
+                        <strong class="text-dark">Revenus max:</strong> {{ (session.prixForfait * session.nombresPlaces)|number_format(0, ',', ' ') }} CFA
+                      </div>
+                    {% endif %}
+                    <div class="small text-success">
+                      <i class="bx bx-check-circle me-1"></i>
+                      Session active
+                    </div>
+                  </div>
+                  
+                  <!-- Zone de suppression -->
+                  <div class="mt-4 pt-3 border-top border-danger border-opacity-25">
+                    <h6 class="text-danger small fw-bold mb-3">
+                      <i class="bx bx-trash me-1"></i>
+                      Zone dangereuse
+                    </h6>
+                    <div class="bg-danger bg-opacity-10 rounded-3 p-3 border border-danger border-opacity-25">
+                      <p class="small text-danger mb-2">
+                        <i class="bx bx-warning me-1"></i>
+                        Cette action est irréversible
+                      </p>
+                      {{ include('session/_delete_form.html.twig') }}
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS personnalisé -->
+<style>
+.sticky-top {
+  top: 2rem !important;
+}
+
+@media (max-width: 991.98px) {
+  .sticky-top {
+    position: static !important;
+  }
+}
+
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.position-relative .opacity-10 {
+  opacity: 0.1;
+}
+</style>
 {% endblock %}

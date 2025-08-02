@@ -1,17 +1,150 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Modifier voyage{% endblock %}
-{% block page_title %}Modifier voyage{% endblock %}
+{% block title %}Modifier voyage - Moubarack Voyages{% endblock %}
+
+{% block page_title %}
+    <i class="bx bx-edit me-2"></i>Modifier un voyage
+{% endblock %}
+
 {% block body %}
-<div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-bold">Édition voyage</span>
-    <a href="{{ path('app_voyage_index') }}" class="btn btn-sm btn-outline-primary"><i class="bx bx-arrow-back"></i> Retour</a>
-  </div>
-  <div class="card-body">
-    {{ include('voyage/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
-    <div class="mt-3">
-      {{ include('voyage/_delete_form.html.twig') }}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header avec breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item"><a href="{{ path('app_voyage_index') }}" class="text-decoration-none">Voyages</a></li>
+              <li class="breadcrumb-item active">
+                Modifier {{ voyage.destination }} - {{ voyage.typeVoyage }}
+              </li>
+            </ol>
+          </nav>
+          <h4 class="mb-0 fw-bold text-dark">
+            <i class="bx bx-edit text-primary me-2"></i>
+            Modifier le voyage
+          </h4>
+        </div>
+        <div>
+          <a href="{{ path('app_voyage_index') }}" 
+             class="btn btn-outline-secondary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-arrow-back me-2"></i>Retour à la liste
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Formulaire principal -->
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white py-4 px-4 border-bottom">
+              <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                  <i class="bx bx-map-marked-alt text-primary fs-3"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1 fw-bold text-dark">
+                    Modification des informations
+                  </h5>
+                  <p class="text-muted small mb-0">Modifiez les informations du voyage</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body p-4">
+              {{ include('voyage/_form.html.twig', {'button_label': 'Mettre à jour'}) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar d'aide -->
+        <div class="col-lg-4">
+          <div class="sticky-top" style="top: 2rem;">
+            <!-- Aperçu du voyage -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-map-marked-alt text-primary me-2"></i>
+                  Aperçu actuel
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                  {% if voyage.typeVoyage == 'Hajj' %}
+                      <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: 600;">
+                          <i class="bx bx-home-heart"></i>
+                      </div>
+                  {% elseif voyage.typeVoyage == 'Omra' %}
+                      <div class="rounded-circle bg-info text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: 600;">
+                          <i class="bx bx-home-smile"></i>
+                      </div>
+                  {% else %}
+                      <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: 600;">
+                          <i class="bx bx-map-pin"></i>
+                      </div>
+                  {% endif %}
+                  <div>
+                    <div class="fw-bold text-dark">{{ voyage.destination }}</div>
+                    <div class="small text-muted">Voyage #{{ voyage.id }}</div>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div class="mb-1">
+                    <i class="bx bx-category me-1"></i>{{ voyage.typeVoyage }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zone de suppression -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 border-danger border-opacity-25">
+              <div class="card-header bg-danger bg-opacity-10 py-3 px-4 border-bottom border-danger border-opacity-25">
+                <h6 class="mb-0 fw-bold text-danger">
+                  <i class="bx bx-trash me-2"></i>
+                  Zone dangereuse
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <p class="small text-danger mb-3">
+                  <i class="bx bx-warning me-1"></i>
+                  La suppression de ce voyage est définitive et irréversible.
+                </p>
+                <div class="d-grid">
+                  {{ include('voyage/_delete_form.html.twig') }}
+                </div>
+              </div>
+            </div>
+
+            <!-- Conseils -->
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-lightbulb text-warning me-2"></i>
+                  Conseils de modification
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="small">
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-world text-primary me-1"></i>Destination
+                    </div>
+                    <div class="text-muted">Vérifiez l'orthographe avant de sauvegarder</div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-category text-primary me-1"></i>Type
+                    </div>
+                    <div class="text-muted">Le changement de type peut affecter les réservations</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>

@@ -1,15 +1,503 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Nouvelle session{% endblock %}
-{% block page_title %}Créer une session{% endblock %}
+{% block title %}
+  {% if session.id is defined and session.id %}
+    Modifier session - Moubarack Voyages
+  {% else %}
+    Nouvelle session - Moubarack Voyages
+  {% endif %}
+{% endblock %}
+
+{% block page_title %}
+  {% if session.id is defined and session.id %}
+    <i class="bx bx-edit me-2"></i>Modifier une session
+  {% else %}
+    <i class="bx bx-calendar-plus me-2"></i>Créer une session
+  {% endif %}
+{% endblock %}
+
 {% block body %}
-<div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-bold">Création session</span>
-    <a href="{{ path('app_session_index') }}" class="btn btn-sm btn-outline-primary"><i class="bx bx-arrow-back"></i> Retour</a>
-  </div>
-  <div class="card-body">
-    {{ include('session/_form.html.twig') }}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header avec breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item"><a href="{{ path('app_session_index') }}" class="text-decoration-none">Sessions</a></li>
+              <li class="breadcrumb-item active">
+                {% if session.id is defined and session.id %}
+                  Modifier Session #{{ session.id }}
+                {% else %}
+                  Nouvelle session
+                {% endif %}
+              </li>
+            </ol>
+          </nav>
+          <h4 class="mb-0 fw-bold text-dark">
+            {% if session.id is defined and session.id %}
+              <i class="bx bx-edit text-primary me-2"></i>
+              Modifier la session
+            {% else %}
+              <i class="bx bx-calendar-plus text-primary me-2"></i>
+              Nouvelle session
+            {% endif %}
+          </h4>
+        </div>
+        <div>
+          <a href="{{ path('app_session_index') }}" 
+             class="btn btn-outline-secondary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-arrow-back me-2"></i>Retour à la liste
+          </a>
+        </div>
+      </div>
+
+      <div class="row g-4">
+        <!-- Formulaire principal -->
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white py-4 px-4 border-bottom">
+              <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                  <i class="bx bx-calendar-plus text-primary fs-3"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1 fw-bold text-dark">
+                    {% if session.id is defined and session.id %}
+                      Modification de la session
+                    {% else %}
+                      Informations de la nouvelle session
+                    {% endif %}
+                  </h5>
+                  <p class="text-muted small mb-0">Remplissez tous les champs obligatoires</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-body p-4">
+              {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+              
+              <div class="row g-4">
+                <!-- Nombre de places -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-group text-primary me-1"></i>
+                      Nombre de places <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.nombresPlaces, {
+                      'attr': {
+                        'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                        'placeholder': 'Ex: 25',
+                        'required': true,
+                        'min': 1
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Nombre maximum de participants pour cette session
+                    </div>
+                    <div class="invalid-feedback">
+                      Veuillez saisir un nombre de places valide.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Prix forfait -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-money text-primary me-1"></i>
+                      Prix forfait <span class="text-danger">*</span>
+                    </label>
+                    <div class="input-group">
+                      {{ form_widget(form.prixForfait, {
+                        'attr': {
+                          'class': 'form-control form-control-lg border-0 bg-light rounded-start-3',
+                          'placeholder': 'Ex: 150000',
+                          'required': true,
+                          'min': 0
+                        }
+                      }) }}
+                      <span class="input-group-text bg-light border-0 rounded-end-3 fw-semibold">CFA</span>
+                    </div>
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Prix par personne en francs CFA
+                    </div>
+                    <div class="invalid-feedback">
+                      Veuillez saisir un prix valide.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Date de début -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-calendar-check text-primary me-1"></i>
+                      Date de début <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.dateDebut, {
+                      'attr': {
+                        'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                        'required': true
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Date et heure de début de la session
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Date de fin -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-calendar-x text-primary me-1"></i>
+                      Date de fin <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.dateFin, {
+                      'attr': {
+                        'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                        'required': true
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Date et heure de fin de la session
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Voyage associé -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-map text-primary me-1"></i>
+                      Voyage associé <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.voyage, {
+                      'attr': {
+                        'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+                        'required': true
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Sélectionnez le voyage pour cette session
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Date d'inscription -->
+                <div class="col-12">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-calendar-plus text-primary me-1"></i>
+                      Date d'inscription
+                    </label>
+                    {{ form_widget(form.dateInscription, {
+                      'attr': {
+                        'class': 'form-control form-control-lg border-0 bg-light rounded-3'
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Date limite d'inscription (optionnelle)
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Boutons d'action -->
+              <div class="row mt-5 pt-4 border-top">
+                <div class="col-12">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted small">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Les champs marqués d'un <span class="text-danger">*</span> sont obligatoires
+                    </div>
+                    <div class="d-flex gap-2">
+                      <a href="{{ path('app_session_index') }}" 
+                         class="btn btn-outline-secondary rounded-3 px-4 py-2 fw-semibold">
+                        <i class="bx bx-x me-2"></i>Annuler
+                      </a>
+                      <button type="submit" class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+                        <i class="bx bx-check me-2"></i>
+                        {% if session.id is defined and session.id %}
+                          Modifier la session
+                        {% else %}
+                          Créer la session
+                        {% endif %}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {{ form_end(form) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar d'aide -->
+        <div class="col-lg-4">
+          <div class="sticky-top" style="top: 2rem;">
+            <!-- Aperçu de la session -->
+            {% if session.id is defined and session.id %}
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-calendar-event text-primary me-2"></i>
+                  Aperçu actuel
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: 600;">
+                     #{{ session.id }}
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark">Session #{{ session.id }}</div>
+                    <div class="small text-muted">{{ session.nombresPlaces ?: '0' }} places</div>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div class="mb-1">
+                    <i class="bx bx-money me-1"></i>{{ session.prixForfait ? (session.prixForfait|number_format(0, ',', ' ')) ~ ' CFA' : 'Prix non défini' }}
+                  </div>
+                  <div class="mb-1">
+                    <i class="bx bx-map me-1"></i>{{ session.voyage ? session.voyage.typeVoyage : 'Voyage non associé' }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zone de suppression pour l'édition -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 border-danger border-opacity-25">
+              <div class="card-header bg-danger bg-opacity-10 py-3 px-4 border-bottom border-danger border-opacity-25">
+                <h6 class="mb-0 fw-bold text-danger">
+                  <i class="bx bx-trash me-2"></i>
+                  Zone dangereuse
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <p class="small text-danger mb-3">
+                  <i class="bx bx-warning me-1"></i>
+                  La suppression de cette session est définitive et irréversible.
+                </p>
+                <div class="d-grid">
+                  <form method="post" action="{{ path('app_session_delete', {'id': session.id}) }}" 
+                        onsubmit="return confirm('Êtes-vous absolument sûr de vouloir supprimer cette session ? Cette action ne peut pas être annulée.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ session.id) }}">
+                    <button type="submit" class="btn btn-outline-danger btn-sm fw-semibold">
+                      <i class="bx bx-trash me-2"></i>
+                      Supprimer définitivement
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- Conseils -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-lightbulb text-warning me-2"></i>
+                  Conseils de saisie
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="small">
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-group text-primary me-1"></i>Nombre de places
+                    </div>
+                    <div class="text-muted">Définissez selon la capacité du transport et de l'hébergement</div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-calendar text-primary me-1"></i>Dates
+                    </div>
+                    <div class="text-muted">Vérifiez que la date de fin est postérieure à celle de début</div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-money text-primary me-1"></i>Prix
+                    </div>
+                    <div class="text-muted">Incluez tous les coûts : transport, hébergement, repas</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Raccourcis -->
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-rocket text-success me-2"></i>
+                  Raccourcis
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary" onclick="fillSampleData()">
+                    <i class="bx bx-data me-1"></i>Données d'exemple
+                  </button>
+                  <a href="{{ path('app_session_index') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bx bx-list-ul me-1"></i>Toutes les sessions
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
+
+<!-- CSS personnalisé -->
+<style>
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  background-color: white;
+}
+
+.form-control-lg,
+.form-select-lg {
+  padding: 0.75rem 1rem;
+}
+
+.input-group .form-control:focus {
+  z-index: 3;
+}
+
+.sticky-top {
+  top: 2rem !important;
+}
+
+@media (max-width: 991.98px) {
+  .sticky-top {
+    position: static !important;
+  }
+}
+
+/* Animation pour les cartes */
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+
+/* Style pour les inputs de type datetime-local */
+input[type="datetime-local"] {
+  color: var(--bs-body-color);
+}
+
+input[type="datetime-local"]::-webkit-calendar-picker-indicator {
+  background-color: var(--bs-primary);
+  border-radius: 3px;
+  padding: 2px;
+  cursor: pointer;
+}
+</style>
+
+<!-- JavaScript pour les fonctionnalités -->
+<script>
+// Validation en temps réel
+document.addEventListener('DOMContentLoaded', function() {
+  const forms = document.querySelectorAll('.needs-validation');
+  
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+
+  // Validation des dates
+  const dateDebut = document.querySelector('input[name*="dateDebut"]');
+  const dateFin = document.querySelector('input[name*="dateFin"]');
+  
+  if (dateDebut && dateFin) {
+    function validateDates() {
+      if (dateDebut.value && dateFin.value) {
+        if (new Date(dateDebut.value) >= new Date(dateFin.value)) {
+          dateFin.setCustomValidity('La date de fin doit être postérieure à la date de début');
+        } else {
+          dateFin.setCustomValidity('');
+        }
+      }
+    }
+    
+    dateDebut.addEventListener('change', validateDates);
+    dateFin.addEventListener('change', validateDates);
+  }
+});
+
+// Fonction pour remplir avec des données d'exemple
+function fillSampleData() {
+  // Nombre de places
+  const placesField = document.querySelector('input[name*="nombresPlaces"]');
+  if (placesField) placesField.value = '25';
+  
+  // Prix forfait
+  const prixField = document.querySelector('input[name*="prixForfait"]');
+  if (prixField) prixField.value = '150000';
+  
+  // Dates (exemple: session dans 1 mois pour 1 semaine)
+  const now = new Date();
+  const dateDebut = new Date(now.getTime() + 30 * 24 * 60 * 60 * 1000); // +30 jours
+  const dateFin = new Date(dateDebut.getTime() + 7 * 24 * 60 * 60 * 1000); // +7 jours
+  
+  const dateDebutField = document.querySelector('input[name*="dateDebut"]');
+  const dateFinField = document.querySelector('input[name*="dateFin"]');
+  
+  if (dateDebutField) {
+    dateDebutField.value = dateDebut.toISOString().slice(0, 16);
+  }
+  if (dateFinField) {
+    dateFinField.value = dateFin.toISOString().slice(0, 16);
+  }
+  
+  // Date d'inscription (1 semaine avant le début)
+  const dateInscription = new Date(dateDebut.getTime() - 7 * 24 * 60 * 60 * 1000);
+  const dateInscriptionField = document.querySelector('input[name*="dateInscription"]');
+  if (dateInscriptionField) {
+    dateInscriptionField.value = dateInscription.toISOString().slice(0, 16);
+  }
+}
+
+// Calcul automatique des revenus potentiels
+document.addEventListener('DOMContentLoaded', function() {
+  const placesField = document.querySelector('input[name*="nombresPlaces"]');
+  const prixField = document.querySelector('input[name*="prixForfait"]');
+  
+  function updateRevenusPotentiels() {
+    const places = parseInt(placesField?.value || 0);
+    const prix = parseInt(prixField?.value || 0);
+    const revenus = places * prix;
+    
+    // Vous pouvez ajouter ici une logique pour afficher les revenus potentiels
+    console.log('Revenus potentiels:', revenus.toLocaleString() + ' CFA');
+  }
+  
+  if (placesField) placesField.addEventListener('input', updateRevenusPotentiels);
+  if (prixField) prixField.addEventListener('input', updateRevenusPotentiels);
+});
+</script>
 {% endblock %}

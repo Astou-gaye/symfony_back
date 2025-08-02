@@ -1,34 +1,197 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Billet d'avion{% endblock %}
-{% block page_title %}Détail billet d'avion{% endblock %}
+{% block title %}Paiement - Moubarack Voyages{% endblock %}
+{% block page_title %}<i class="bx bx-credit-card me-2"></i>Détail Paiement{% endblock %}
+
 {% block body %}
-<div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-bold">Informations billet d'avion</span>
-    <div>
-      <a href="{{ path('app_billets_avion_edit', {'id': billets_avion.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i> Modifier</a>
-      <a href="{{ path('app_billets_avion_index') }}" class="btn btn-sm btn-outline-primary"><i class="bx bx-arrow-back"></i> Retour</a>
-    </div>
-  </div>
-  <div class="card-body">
-    <table class="table mb-0">
-      <tbody>
-        <tr><th>Id</th><td>{{ billets_avion.id }}</td></tr>
-        <tr><th>Nom</th><td>{{ billets_avion.nom }}</td></tr>
-        <tr><th>Prénom</th><td>{{ billets_avion.prenom }}</td></tr>
-        <tr><th>Sexe</th><td>{{ billets_avion.sexe }}</td></tr>
-        <tr><th>Date départ</th><td>{{ billets_avion.dateDepart ? billets_avion.dateDepart|date('Y-m-d') : '' }}</td></tr>
-        <tr><th>Date retour</th><td>{{ billets_avion.dateRetour ? billets_avion.dateRetour|date('Y-m-d') : '' }}</td></tr>
-        <tr><th>Ville départ</th><td>{{ billets_avion.villeDepart }}</td></tr>
-        <tr><th>Ville arrivée</th><td>{{ billets_avion.villeArrivee }}</td></tr>
-        <tr><th>Type billet</th><td>{{ billets_avion.type}}</td></tr>
-        <tr><th>Email</th><td>{{ billets_avion.email }}</td></tr>
-      </tbody>
-    </table>
-    <div class="mt-3">
-      {{ include('billets_avion/_delete_form.html.twig') }}
-    </div>
-  </div>
-</div>
-{% endblock %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header avec breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item"><a href="{{ path('app_paiement_index') }}" class="text-decoration-none">Paiements</a></li>
+              <li class="breadcrumb-item active">Paiement #{{ paiement.id }}</li>
+            </ol>
+          </nav>
+          <h4 class="mb-0 fw-bold text-dark">
+            <i class="bx bx-credit-card text-primary me-2"></i>
+            Paiement #{{ paiement.id }}
+          </h4>
+        </div>
+        <div class="d-flex gap-2">
+          <a href="{{ path('app_paiement_edit', {'id': paiement.id}) }}" 
+             class="btn btn-outline-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-edit me-2"></i>Modifier
+          </a>
+          <a href="{{ path('app_paiement_index') }}" 
+             class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-arrow-back me-2"></i>Retour
+          </a>
+        </div>
+      </div>
+
+      <!-- Carte principale -->
+      <div class="card border-0 shadow-sm rounded-4">
+        <!-- Header de la carte avec statut -->
+        <div class="card-header bg-white py-4 px-4 border-bottom">
+          <div class="row align-items-center">
+            <div class="col-auto">
+              <div class="position-relative">
+                <div class="rounded-circle bg-success text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 80px; height: 80px; font-weight: 600; font-size: 1.5rem;">
+                   #{{ paiement.id }}
+                </div>
+                <div class="position-absolute bottom-0 end-0 bg-primary rounded-circle border-3 border-white" style="width: 20px; height: 20px;"></div>
+              </div>
+            </div>
+            <div class="col">
+              <h5 class="mb-1 fw-bold text-dark">Paiement #{{ paiement.id }}</h5>
+              <p class="mb-1 text-muted">
+                <i class="bx bx-calendar me-1"></i>
+                {{ paiement.datePaiement ? paiement.datePaiement|date('d/m/Y à H:i') : 'Date non définie' }}
+              </p>
+              <p class="mb-0 text-muted small">
+                <i class="bx bx-money me-1"></i>
+                Montant: {{ paiement.montantPaye ? paiement.montantPaye|number_format(0, ',', ' ') : '0' }} FCFA
+              </p>
+            </div>
+            <div class="col-auto">
+              {% set status = paiement.statusPaiement ?: 'En attente' %}
+              {% if status == 'Payé' or status == 'Validé' %}
+                <div class="d-flex align-items-center">
+                  <div class="bg-success bg-opacity-10 rounded-3 p-3 me-3">
+                    <i class="bx bx-check-circle text-success fs-2"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold text-success">{{ status }}</div>
+                    <div class="small text-muted">Paiement validé</div>
+                  </div>
+                </div>
+              {% elseif status == 'En attente' %}
+                <div class="d-flex align-items-center">
+                  <div class="bg-warning bg-opacity-10 rounded-3 p-3 me-3">
+                    <i class="bx bx-time text-warning fs-2"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold text-warning">{{ status }}</div>
+                    <div class="small text-muted">En cours de traitement</div>
+                  </div>
+                </div>
+              {% else %}
+                <div class="d-flex align-items-center">
+                  <div class="bg-danger bg-opacity-10 rounded-3 p-3 me-3">
+                    <i class="bx bx-x-circle text-danger fs-2"></i>
+                  </div>
+                  <div>
+                    <div class="fw-bold text-danger">{{ status }}</div>
+                    <div class="small text-muted">Paiement annulé</div>
+                  </div>
+                </div>
+              {% endif %}
+            </div>
+          </div>
+        </div>
+
+        <div class="card-body p-4">
+          <div class="row g-4">
+            <!-- Informations de paiement -->
+            <div class="col-lg-8">
+              <h6 class="text-uppercase text-muted fw-bold mb-4 border-bottom pb-2">
+                <i class="bx bx-info-circle text-primary me-2"></i>
+                Informations du paiement
+              </h6>
+              
+              <div class="row g-4">
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-money fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Montant Payé</div>
+                    <div class="fs-4 fw-bold text-success mb-0">{{ paiement.montantPaye ? paiement.montantPaye|number_format(0, ',', ' ') : '0' }} FCFA</div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-calendar fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Date de Paiement</div>
+                    {% if paiement.datePaiement %}
+                      <div class="fs-5 fw-bold text-primary mb-1">{{ paiement.datePaiement|date('d/m/Y') }}</div>
+                      <div class="small text-muted">{{ paiement.datePaiement|date('H:i') }}</div>
+                    {% else %}
+                      <div class="fs-5 fw-bold text-primary mb-1">{{ 'now'|date('d/m/Y') }}</div>
+                      <div class="small text-muted">{{ 'now'|date('H:i') }}</div>
+                    {% endif %}
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-credit-card fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Mode de Paiement</div>
+                    <div class="mb-2">
+                      {% set mode = paiement.modePaiement ?: 'Espèces' %}
+                      {% if mode == 'Espèces' or mode == 'Cash' %}
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-3 py-2 fw-medium fs-6">
+                          <i class="bx bx-money me-1"></i>{{ mode }}
+                        </span>
+                      {% elseif mode == 'Carte' %}
+                        <span class="badge bg-primary bg-opacity-10 text-primary border border-primary border-opacity-25 rounded-pill px-3 py-2 fw-medium fs-6">
+                          <i class="bx bx-credit-card me-1"></i>{{ mode }}
+                        </span>
+                      {% else %}
+                        <span class="badge bg-info bg-opacity-10 text-info border border-info border-opacity-25 rounded-pill px-3 py-2 fw-medium fs-6">
+                          <i class="bx bx-transfer me-1"></i>{{ mode }}
+                        </span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-md-6">
+                  <div class="border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-check-shield fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">Statut</div>
+                    <div class="mb-2">
+                      {% if status == 'Payé' or status == 'Validé' %}
+                        <span class="badge bg-success bg-opacity-10 text-success border border-success border-opacity-25 rounded-pill px-3 py-2 fw-medium fs-6">
+                          <i class="bx bx-check-circle me-1"></i>{{ status }}
+                        </span>
+                      {% elseif status == 'En attente' %}
+                        <span class="badge bg-warning bg-opacity-10 text-warning border border-warning border-opacity-25 rounded-pill px-3 py-2 fw-medium fs-6">
+                          <i class="bx bx-time me-1"></i>{{ status }}
+                        </span>
+                      {% else %}
+                        <span class="badge bg-danger bg-opacity-10 text-danger border border-danger border-opacity-25 rounded-pill px-3 py-2 fw-medium fs-6">
+                          <i class="bx bx-x-circle me-1"></i>{{ status }}
+                        </span>
+                      {% endif %}
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="col-12">
+                  <div class="border-0 shadow-sm rounded-4 p-4 position-relative overflow-hidden bg-light">
+                    <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                      <i class="bx bx-receipt fs-1"></i>
+                    </div>
+                    <div class="text-muted small mb-2 fw-medium text-uppercase">
+                      <i class="bx bx-receipt me-1"></i>Reçu
+                    </div>
+                    {% if paiement.recu %}
+                      <div class="d-flex align-items-center gap-3">
+                        <div class="bg-success bg-opacity-10 rounded-3 p-2">
+                          <i class="bx bx-check text-success fs-5"></i>
+                        </div>
+                        <div>
+                          <div class="fw-bold text-success">Reçu disponible</div>
+                          <div class="small text-mute

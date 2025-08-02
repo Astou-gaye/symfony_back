@@ -1,45 +1,277 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réservations{% endblock %}
-{% block page_title %}Liste des réservations{% endblock %}
+{% block title %}Réservations - Moubarack Voyages{% endblock %}
+
+{% block page_title %}
+    <i class="bx bx-bookmark me-2"></i>Gestion des Réservations
+{% endblock %}
+
 {% block body %}
-<div class="card">
-  <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-bold">Réservations</span>
-    <a href="{{ path('app_reservation_new') }}" class="btn btn-primary btn-sm"><i class="bx bx-plus"></i> Nouvelle réservation</a>
-  </div>
-  <div class="table-responsive">
-    <table class="table table-hover align-middle mb-0">
-      <thead class="table-light">
-        <tr>
-          <th>Id</th>
-          <th>Date réservation</th>
-          <th>Client</th>
-          <th>Type</th>
-          <th>Status</th>
-          <th>Actions</th>
-        </tr>
-      </thead>
-      <tbody>
-      {% for reservation in reservations %}
-        <tr>
-          <td>{{ reservation.id }}</td>
-          <td>{{ reservation.dateReservation ? reservation.dateReservation|date('Y-m-d') : '' }}</td>
-          <td>{{ reservation.client.prenom}} {{ reservation.client.nom }}</td>
-          <td>{{ reservation.type }}</td>
-          <td>{{ reservation.status }}</td>
-          <td>
-            <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-sm btn-outline-info"><i class="bx bx-show"></i></a>
-            <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" class="btn btn-sm btn-outline-secondary"><i class="bx bx-edit"></i></a>
-          </td>
-        </tr>
-      {% else %}
-        <tr>
-          <td colspan="4" class="text-center text-muted">Aucune réservation trouvée</td>
-        </tr>
-      {% endfor %}
-      </tbody>
-    </table>
-  </div>
+
+<!-- Statistiques en haut -->
+<div class="row mb-4 g-3">
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-bookmark fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">Réservations Total</div>
+            <div class="fs-2 fw-bold text-primary mb-0">{{ reservations|length }}</div>
+            <div class="small text-success mt-1">
+                <i class="bx bx-trending-up me-1"></i>Actives
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-calendar-plus fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">Nouvelles Cette Semaine</div>
+            <div class="fs-2 fw-bold text-success mb-0">+12</div>
+            <div class="small text-muted mt-1">
+                <i class="bx bx-calendar me-1"></i>7 derniers jours
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-check-circle fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">Confirmées</div>
+            <div class="fs-2 fw-bold text-info mb-0">85%</div>
+            <div class="small text-muted mt-1">
+                <i class="bx bx-pie-chart-alt me-1"></i>Taux de confirmation
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-xl-3">
+        <div class="card border-0 shadow-sm rounded-4 text-center p-4 h-100 position-relative overflow-hidden">
+            <div class="position-absolute top-0 end-0 p-3 opacity-10">
+                <i class="bx bx-time fs-1"></i>
+            </div>
+            <div class="text-muted small mb-2 fw-medium">En Attente</div>
+            <div class="fs-2 fw-bold text-warning mb-0">8</div>
+            <div class="small text-muted mt-1">
+                <i class="bx bx-hourglass me-1"></i>À traiter
+            </div>
+        </div>
+    </div>
 </div>
+
+<!-- Barre de recherche et filtres -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-body p-3">
+                <div class="row g-3 align-items-center">
+                    <div class="col-md-4">
+                        <div class="input-group">
+                            <span class="input-group-text bg-light border-0">
+                                <i class="bx bx-search text-muted"></i>
+                            </span>
+                            <input type="text" class="form-control border-0 bg-light" placeholder="Rechercher une réservation...">
+                        </div>
+                    </div>
+                    <div class="col-md-3">
+                        <select class="form-select border-0 bg-light">
+                            <option>Tous les types</option>
+                            <option>Vol</option>
+                            <option>Hôtel</option>
+                            <option>Package</option>
+                        </select>
+                    </div>
+                    <div class="col-md-2">
+                        <select class="form-select border-0 bg-light">
+                            <option>Tous statuts</option>
+                            <option>Confirmée</option>
+                            <option>En attente</option>
+                            <option>Annulée</option>
+                        </select>
+                    </div>
+                    <div class="col-md-3 text-end">
+                        <a href="{{ path('app_reservation_new') }}" class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+                            <i class="bx bx-plus-circle me-2"></i>Nouvelle Réservation
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Tableau des réservations -->
+<div class="card shadow-sm border-0 rounded-4">
+    <div class="card-header bg-white py-4 px-4 border-bottom">
+        <div class="d-flex justify-content-between align-items-center">
+            <div>
+                <h5 class="mb-1 fw-bold text-dark">
+                    <i class="bx bx-bookmark me-2 text-primary"></i>Liste des Réservations ({{ reservations|length }})
+                </h5>
+                <p class="text-muted small mb-0">Gérez toutes les réservations de vos clients</p>
+            </div>
+            <div class="d-flex gap-2">
+                <button class="btn btn-sm btn-outline-secondary rounded-3">
+                    <i class="bx bx-export me-1"></i>Exporter
+                </button>
+                <button class="btn btn-sm btn-outline-primary rounded-3">
+                    <i class="bx bx-filter me-1"></i>Filtrer
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="card-body p-0">
+        <div class="table-responsive">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th class="ps-4 py-3 border-0 fw-semibold text-muted text-uppercase small">Réservation</th>
+                        <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Client</th>
+                        <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Type</th>
+                        <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Date</th>
+                        <th class="py-3 border-0 fw-semibold text-muted text-uppercase small">Statut</th>
+                        <th class="py-3 border-0 fw-semibold text-muted text-uppercase small text-center">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for reservation in reservations %}
+                    <tr class="border-bottom border-light">
+                        <td class="ps-4 py-3">
+                            <div class="d-flex align-items-center gap-3">
+                                <div class="position-relative">
+                                    <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center shadow-sm" style="width: 40px; height: 40px; font-weight: 600; font-size: 0.85rem;">
+                                       #{{ reservation.id }}
+                                    </div>
+                                    <div class="position-absolute bottom-0 end-0 bg-success rounded-circle border-2 border-white" style="width: 10px; height: 10px;"></div>
+                                </div>
+                                <div>
+                                    <div class="fw-semibold text-dark mb-1">Réservation #{{ reservation.id }}</div>
+                                    <div class="small text-muted">
+                                        <i class="bx bx-calendar me-1"></i>{{ reservation.dateReservation ? reservation.dateReservation|date('d/m/Y') : 'Date non définie' }}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3">
+                            <div class="d-flex align-items-center gap-2">
+                                <div class="rounded-circle bg-secondary text-white d-flex align-items-center justify-content-center" style="width: 32px; height: 32px; font-weight: 600; font-size: 0.75rem;">
+                                   {{ reservation.client.prenom[:2]|upper }}
+                                </div>
+                                <div>
+                                    <div class="fw-medium text-dark">{{ reservation.client.prenom }} {{ reservation.client.nom }}</div>
+                                    <div class="small text-muted">Client</div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="py-3">
+                            {% set typeClass = reservation.type == 'Vol' ? 'primary' : (reservation.type == 'Hôtel' ? 'success' : 'info') %}
+                            {% set typeIcon = reservation.type == 'Vol' ? 'bx-plane' : (reservation.type == 'Hôtel' ? 'bx-building' : 'bx-package') %}
+                            <span class="badge bg-{{ typeClass }} bg-opacity-10 border border-{{ typeClass }} border-opacity-25 text-{{ typeClass }} rounded-pill px-3 py-2 fw-medium">
+                                <i class="bx {{ typeIcon }} me-1"></i>
+                                {{ reservation.type ?: 'Vol' }}
+                            </span>
+                        </td>
+                        <td class="py-3">
+                            {% if reservation.dateReservation %}
+                                <div class="fw-medium text-dark">{{ reservation.dateReservation|date('d/m/Y') }}</div>
+                                <div class="small text-muted">
+                                    {{ reservation.dateReservation|date('H:i') }}
+                                </div>
+                            {% else %}
+                                <div class="fw-medium text-dark">{{ 'now'|date('d/m/Y') }}</div>
+                                <div class="small text-muted">{{ 'now'|date('H:i') }}</div>
+                            {% endif %}
+                        </td>
+                        <td class="py-3">
+                            {% set statusConfig = {
+                                'Confirmée': {'class': 'success', 'icon': 'bx-check-circle'},
+                                'En attente': {'class': 'warning', 'icon': 'bx-time'},
+                                'Annulée': {'class': 'danger', 'icon': 'bx-x-circle'}
+                            } %}
+                            {% set currentStatus = reservation.status ?: 'Confirmée' %}
+{% set normalizedStatus = currentStatus|lower == 'en attente' ? 'En attente' : (currentStatus|lower == 'annulée' ? 'Annulée' : (currentStatus|lower == 'confirmée' ? 'Confirmée' : 'Confirmée')) %}
+{% set config = statusConfig[normalizedStatus] %}
+                            
+                            <div class="d-flex align-items-center">
+                                <div class="bg-{{ config.class }} bg-opacity-10 rounded-3 p-2 me-2">
+                                    <i class="bx {{ config.icon }} text-{{ config.class }} fs-6"></i>
+                                </div>
+                                <span class="fw-medium text-dark">{{ currentStatus }}</span>
+                            </div>
+                        </td>
+                        <td class="py-3 text-center">
+                            <div class="d-flex justify-content-center gap-1">
+                                <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}"
+                                   class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center"
+                                   style="width: 32px; height: 32px;"
+                                   title="Voir les détails">
+                                    <i class="bx bx-show text-primary"></i>
+                                </a>
+                                <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}"
+                                   class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center"
+                                   style="width: 32px; height: 32px;"
+                                   title="Modifier">
+                                    <i class="bx bx-edit-alt text-success"></i>
+                                </a>
+                                <form method="post" action="{{ path('app_reservation_delete', {'id': reservation.id}) }}"
+                                      onsubmit="return confirm('Êtes-vous sûr de vouloir supprimer cette réservation ?');" class="d-inline">
+                                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                                    <button type="submit" 
+                                            class="btn btn-sm btn-light rounded-circle d-flex align-items-center justify-content-center"
+                                            style="width: 32px; height: 32px;" 
+                                            title="Supprimer">
+                                        <i class="bx bx-trash text-danger"></i>
+                                    </button>
+                                </form>
+                            </div>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="6" class="text-center py-5">
+                            <div class="py-4">
+                                <div class="mb-3">
+                                    <i class="bx bx-bookmark-minus text-muted" style="font-size: 4rem;"></i>
+                                </div>
+                                <h6 class="text-muted mb-2">Aucune réservation enregistrée</h6>
+                                <p class="text-muted small mb-4">Commencez par ajouter votre première réservation</p>
+                                <a href="{{ path('app_reservation_new') }}" class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+                                    <i class="bx bx-plus-circle me-2"></i>Ajouter une réservation
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        
+        <!-- Pagination -->
+        {% if reservations|length > 0 %}
+        <div class="card-footer bg-white border-0 py-3">
+            <div class="d-flex justify-content-between align-items-center">
+                <div class="text-muted small">
+                    Affichage de 1 à {{ reservations|length }} sur {{ reservations|length }} réservations
+                </div>
+                <nav>
+                    <ul class="pagination pagination-sm mb-0">
+                        <li class="page-item disabled">
+                            <span class="page-link border-0 bg-transparent">Précédent</span>
+                        </li>
+                        <li class="page-item active">
+                            <span class="page-link bg-primary border-primary">1</span>
+                        </li>
+                        <li class="page-item disabled">
+                            <span class="page-link border-0 bg-transparent">Suivant</span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+
 {% endblock %}

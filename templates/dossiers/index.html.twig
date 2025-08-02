@@ -1,57 +1,53 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Réservations{% endblock %}
+{% block title %}Dossiers{% endblock %}
 
-{% block page_title %}Liste des réservations{% endblock %}
+{% block page_title %}Liste des dossiers{% endblock %}
 
 {% block body %}
 <div class="card">
   <div class="card-header d-flex justify-content-between align-items-center">
-    <span class="fw-bold">Réservations</span>
-    <a href="{{ path('app_reservation_new') }}" class="btn btn-primary">Nouvelle réservation</a>
+    <span class="fw-bold">Dossiers</span>
+    <a href="{{ path('app_dossiers_new') }}" class="btn btn-primary">Nouveau dossier</a>
   </div>
   <div class="card-body">
     <table class="table table-hover table-bordered table-striped">
       <thead>
         <tr>
-          <th>Nom</th>
-          <th>Prénom</th>
-          <th>Email</th>
-          <th>Téléphone</th>
-          <th>Date de naissance</th>
-          <th>Adresse</th>
-          <th>Sexe</th>
-          <th>Type</th>
-          <th>Status</th>
           <th>Client</th>
-          <th>Voyage</th>
-          <th>Date réservation</th>
+          <th>Passeport</th>
+          <th>Visa</th>
+          <th>Carnet Santé</th>
+          <th>Photo Identité</th>
           <th>Actions</th>
         </tr>
       </thead>
       <tbody>
-        {% for reservation in reservations %}
+        {% for dossier in dossiers %}
           <tr>
-            <td>{{ reservation.nom }}</td>
-            <td>{{ reservation.prenom }}</td>
-            <td>{{ reservation.email }}</td>
-            <td>{{ reservation.telephone }}</td>
-            <td>{{ reservation.dateNaissance ? reservation.dateNaissance|date('d/m/Y') : 'N/A' }}</td>
-            <td>{{ reservation.adresse }}</td>
-            <td>{{ reservation.sexe }}</td>
-            <td>{{ reservation.type }}</td>
-            <td>{{ reservation.status }}</td>
-            <td>{{ reservation.client ? reservation.client.nom : 'N/A' }}</td>
-            <td>{{ reservation.voyage ? reservation.voyage.titre : 'N/A' }}</td>
-            <td>{{ reservation.dateReservation ? reservation.dateReservation|date('d/m/Y') : 'N/A' }}</td>
+            <td>
+              {% if dossier.clients is not null %}
+                {{ dossier.clients.prenom }}
+              {% else %}
+                <em>Non assigné</em>
+              {% endif %}
+            </td>
+            <td>{{ dossier.passeport }}</td>
+            <td>{{ dossier.visa }}</td>
+            <td>{{ dossier.carnetSante }}</td>
+            <td>{{ dossier.photoIdentite }}</td>
             <td class="text-nowrap">
-              <a href="{{ path('app_reservation_show', {'id': reservation.id}) }}" class="btn btn-sm btn-primary">Voir</a>
-              <a href="{{ path('app_reservation_edit', {'id': reservation.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+              <a href="{{ path('app_dossiers_show', {'id': dossier.id}) }}" class="btn btn-sm btn-primary">Voir</a>
+              <a href="{{ path('app_dossiers_edit', {'id': dossier.id}) }}" class="btn btn-sm btn-warning">Modifier</a>
+              <form method="post" action="{{ path('app_dossiers_delete', {'id': dossier.id}) }}" style="display:inline-block;" onsubmit="return confirm('Voulez-vous vraiment supprimer ce dossier ?');">
+                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ dossier.id) }}">
+                <button class="btn btn-sm btn-danger">Supprimer</button>
+              </form>
             </td>
           </tr>
         {% else %}
           <tr>
-            <td colspan="13" class="text-center">Aucune réservation trouvée.</td>
+            <td colspan="6" class="text-center">Aucun dossier trouvé.</td>
           </tr>
         {% endfor %}
       </tbody>

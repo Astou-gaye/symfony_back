@@ -1,4 +1,190 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+
+<div class="row g-4">
+  <!-- Date de réservation -->
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="form-label fw-semibold text-dark mb-2">
+        <i class="bx bx-calendar text-primary me-1"></i>
+        Date de réservation <span class="text-danger">*</span>
+      </label>
+      {{ form_widget(form.dateReservation, {
+        'attr': {
+          'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+          'required': true
+        }
+      }) }}
+      <div class="form-text text-muted">
+        <i class="bx bx-info-circle me-1"></i>
+        Date et heure de la réservation
+      </div>
+      <div class="invalid-feedback">
+        Veuillez saisir une date valide.
+      </div>
+    </div>
+  </div>
+
+  <!-- Client -->
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="form-label fw-semibold text-dark mb-2">
+        <i class="bx bx-user text-primary me-1"></i>
+        Client <span class="text-danger">*</span>
+      </label>
+      {{ form_widget(form.client, {
+        'attr': {
+          'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+          'required': true
+        }
+      }) }}
+      <div class="form-text text-muted">
+        <i class="bx bx-info-circle me-1"></i>
+        Sélectionnez le client pour cette réservation
+      </div>
+      <div class="invalid-feedback">
+        Veuillez sélectionner un client.
+      </div>
+    </div>
+  </div>
+
+  <!-- Type de réservation -->
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="form-label fw-semibold text-dark mb-2">
+        <i class="bx bx-package text-primary me-1"></i>
+        Type de réservation <span class="text-danger">*</span>
+      </label>
+      {{ form_widget(form.type, {
+        'attr': {
+          'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+          'required': true
+        }
+      }) }}
+      <div class="form-text text-muted">
+        <i class="bx bx-info-circle me-1"></i>
+        Vol, Hôtel, Package, etc.
+      </div>
+      <div class="invalid-feedback">
+        Veuillez sélectionner un type.
+      </div>
+    </div>
+  </div>
+
+  <!-- Statut -->
+  <div class="col-md-6">
+    <div class="form-group">
+      <label class="form-label fw-semibold text-dark mb-2">
+        <i class="bx bx-check-circle text-primary me-1"></i>
+        Statut <span class="text-danger">*</span>
+      </label>
+      {{ form_widget(form.status, {
+        'attr': {
+          'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+          'required': true
+        }
+      }) }}
+      <div class="form-text text-muted">
+        <i class="bx bx-info-circle me-1"></i>
+        Confirmée, En attente, Annulée
+      </div>
+      <div class="invalid-feedback">
+        Veuillez sélectionner un statut.
+      </div>
+    </div>
+  </div>
+
+  <!-- Champs supplémentaires dynamiques -->
+  {% for field in form %}
+    {% if field.vars.name not in ['dateReservation', 'client', 'type', 'status', '_token'] %}
+      <div class="col-12">
+        <div class="form-group">
+          <label class="form-label fw-semibold text-dark mb-2">
+            <i class="bx bx-info-circle text-primary me-1"></i>
+            {{ field.vars.label ?: field.vars.name|title }}
+          </label>
+          {% if field.vars.widget_type == 'textarea' %}
+            {{ form_widget(field, {
+              'attr': {
+                'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                'rows': 4
+              }
+            }) }}
+          {% else %}
+            {{ form_widget(field, {
+              'attr': {
+                'class': 'form-control form-control-lg border-0 bg-light rounded-3'
+              }
+            }) }}
+          {% endif %}
+        </div>
+      </div>
+    {% endif %}
+  {% endfor %}
+</div>
+
+<!-- Boutons d'action -->
+<div class="row mt-5 pt-4 border-top">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="text-muted small">
+        <i class="bx bx-info-circle me-1"></i>
+        Les champs marqués d'un <span class="text-danger">*</span> sont obligatoires
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{{ path('app_reservation_index') }}" 
+           class="btn btn-outline-secondary rounded-3 px-4 py-2 fw-semibold">
+          <i class="bx bx-x me-2"></i>Annuler
+        </a>
+        <button type="submit" class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+          <i class="bx bx-check me-2"></i>
+          {{ button_label|default('Enregistrer') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {{ form_end(form) }}
+
+<!-- Style pour le formulaire -->
+<style>
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  background-color: white;
+}
+
+.form-control-lg,
+.form-select-lg {
+  padding: 0.75rem 1rem;
+}
+
+.was-validated .form-control:valid,
+.was-validated .form-select:valid {
+  border-color: #198754;
+  background-color: #f8f9fa;
+}
+
+.was-validated .form-control:invalid,
+.was-validated .form-select:invalid {
+  border-color: #dc3545;
+}
+</style>
+
+<!-- JavaScript pour la validation -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  const form = document.querySelector('.needs-validation');
+  
+  if (form) {
+    form.addEventListener('submit', function(event) {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  }
+});
+</script>

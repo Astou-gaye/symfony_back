@@ -20,7 +20,7 @@ class DossiersType extends AbstractType
             ->add('photoIdentite')
             ->add('clients', EntityType::class, [
                 'class' => Client::class,
-                'choice_label' => 'id',
+                'choice_label' => 'prenom',
             ])
         ;
     }

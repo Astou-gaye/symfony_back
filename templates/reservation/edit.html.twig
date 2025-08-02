@@ -1,13 +1,443 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Edit Reservation{% endblock %}
+{% block title %}
+  {% if reservation.id is defined and reservation.id %}
+    Modifier réservation - Moubarack Voyages
+  {% else %}
+    Nouvelle réservation - Moubarack Voyages
+  {% endif %}
+{% endblock %}
+
+{% block page_title %}
+  {% if reservation.id is defined and reservation.id %}
+    <i class="bx bx-edit me-2"></i>Modifier une réservation
+  {% else %}
+    <i class="bx bx-bookmark-plus me-2"></i>Créer une réservation
+  {% endif %}
+{% endblock %}
 
 {% block body %}
-    <h1>Edit Reservation</h1>
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header avec breadcrumb -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <nav aria-label="breadcrumb">
+            <ol class="breadcrumb mb-1">
+              <li class="breadcrumb-item"><a href="{{ path('app_reservation_index') }}" class="text-decoration-none">Réservations</a></li>
+              <li class="breadcrumb-item active">
+                {% if reservation.id is defined and reservation.id %}
+                  Modifier réservation #{{ reservation.id }}
+                {% else %}
+                  Nouvelle réservation
+                {% endif %}
+              </li>
+            </ol>
+          </nav>
+          <h4 class="mb-0 fw-bold text-dark">
+            {% if reservation.id is defined and reservation.id %}
+              <i class="bx bx-edit text-primary me-2"></i>
+              Modifier la réservation
+            {% else %}
+              <i class="bx bx-bookmark-plus text-primary me-2"></i>
+              Nouvelle réservation
+            {% endif %}
+          </h4>
+        </div>
+        <div>
+          <a href="{{ path('app_reservation_index') }}" 
+             class="btn btn-outline-secondary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+            <i class="bx bx-arrow-back me-2"></i>Retour à la liste
+          </a>
+        </div>
+      </div>
 
-    {{ include('reservation/_form.html.twig', {'button_label': 'Update'}) }}
+      <div class="row g-4">
+        <!-- Formulaire principal -->
+        <div class="col-lg-8">
+          <div class="card border-0 shadow-sm rounded-4">
+            <div class="card-header bg-white py-4 px-4 border-bottom">
+              <div class="d-flex align-items-center">
+                <div class="bg-primary bg-opacity-10 rounded-3 p-3 me-3">
+                  <i class="bx bx-bookmark text-primary fs-3"></i>
+                </div>
+                <div>
+                  <h5 class="mb-1 fw-bold text-dark">
+                    {% if reservation.id is defined and reservation.id %}
+                      Modification de la réservation
+                    {% else %}
+                      Informations de la nouvelle réservation
+                    {% endif %}
+                  </h5>
+                  <p class="text-muted small mb-0">Remplissez tous les champs obligatoires</p>
+                </div>
+              </div>
+            </div>
 
-    <a href="{{ path('app_reservation_index') }}">back to list</a>
+            <div class="card-body p-4">
+              {{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+              
+              <div class="row g-4">
+                <!-- Date de réservation -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-calendar text-primary me-1"></i>
+                      Date de réservation <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.dateReservation, {
+                      'attr': {
+                        'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                        'required': true
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Date et heure de la réservation
+                    </div>
+                    <div class="invalid-feedback">
+                      Veuillez saisir une date valide.
+                    </div>
+                  </div>
+                </div>
 
-    {{ include('reservation/_delete_form.html.twig') }}
+                <!-- Client -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-user text-primary me-1"></i>
+                      Client <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.client, {
+                      'attr': {
+                        'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+                        'required': true
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Sélectionnez le client pour cette réservation
+                    </div>
+                    <div class="invalid-feedback">
+                      Veuillez sélectionner un client.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Type de réservation -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-package text-primary me-1"></i>
+                      Type de réservation <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.type, {
+                      'attr': {
+                        'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+                        'required': true
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Vol, Hôtel, Package, etc.
+                    </div>
+                    <div class="invalid-feedback">
+                      Veuillez sélectionner un type.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Statut -->
+                <div class="col-md-6">
+                  <div class="form-group">
+                    <label class="form-label fw-semibold text-dark mb-2">
+                      <i class="bx bx-check-circle text-primary me-1"></i>
+                      Statut <span class="text-danger">*</span>
+                    </label>
+                    {{ form_widget(form.status, {
+                      'attr': {
+                        'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+                        'required': true
+                      }
+                    }) }}
+                    <div class="form-text text-muted">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Confirmée, En attente, Annulée
+                    </div>
+                    <div class="invalid-feedback">
+                      Veuillez sélectionner un statut.
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Champs supplémentaires si le formulaire en contient -->
+                {% for field in form %}
+                  {% if field.vars.name not in ['dateReservation', 'client', 'type', 'status', '_token'] %}
+                    <div class="col-12">
+                      <div class="form-group">
+                        <label class="form-label fw-semibold text-dark mb-2">
+                          <i class="bx bx-info-circle text-primary me-1"></i>
+                          {{ field.vars.label ?: field.vars.name|title }}
+                        </label>
+                        {% if field.vars.widget_type == 'textarea' %}
+                          {{ form_widget(field, {
+                            'attr': {
+                              'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+                              'rows': 4
+                            }
+                          }) }}
+                        {% else %}
+                          {{ form_widget(field, {
+                            'attr': {
+                              'class': 'form-control form-control-lg border-0 bg-light rounded-3'
+                            }
+                          }) }}
+                        {% endif %}
+                      </div>
+                    </div>
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              <!-- Boutons d'action -->
+              <div class="row mt-5 pt-4 border-top">
+                <div class="col-12">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="text-muted small">
+                      <i class="bx bx-info-circle me-1"></i>
+                      Les champs marqués d'un <span class="text-danger">*</span> sont obligatoires
+                    </div>
+                    <div class="d-flex gap-2">
+                      <a href="{{ path('app_reservation_index') }}" 
+                         class="btn btn-outline-secondary rounded-3 px-4 py-2 fw-semibold">
+                        <i class="bx bx-x me-2"></i>Annuler
+                      </a>
+                      <button type="submit" class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+                        <i class="bx bx-check me-2"></i>
+                        {% if reservation.id is defined and reservation.id %}
+                          Modifier la réservation
+                        {% else %}
+                          Créer la réservation
+                        {% endif %}
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {{ form_end(form) }}
+            </div>
+          </div>
+        </div>
+
+        <!-- Sidebar d'aide -->
+        <div class="col-lg-4">
+          <div class="sticky-top" style="top: 2rem;">
+            <!-- Aperçu de la réservation -->
+            {% if reservation.id is defined and reservation.id %}
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-bookmark text-primary me-2"></i>
+                  Aperçu actuel
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="d-flex align-items-center mb-3">
+                  <div class="rounded-circle bg-primary text-white d-flex align-items-center justify-content-center me-3" style="width: 50px; height: 50px; font-weight: 600;">
+                     #{{ reservation.id }}
+                  </div>
+                  <div>
+                    <div class="fw-bold text-dark">Réservation #{{ reservation.id }}</div>
+                    <div class="small text-muted">{{ reservation.type ?: 'Vol' }}</div>
+                  </div>
+                </div>
+                <div class="small text-muted">
+                  <div class="mb-1">
+                    <i class="bx bx-calendar me-1"></i>{{ reservation.dateReservation ? reservation.dateReservation|date('d/m/Y') : 'Date non définie' }}
+                  </div>
+                  <div class="mb-1">
+                    <i class="bx bx-user me-1"></i>{{ reservation.client.prenom }} {{ reservation.client.nom }}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Zone de suppression pour l'édition -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4 border-danger border-opacity-25">
+              <div class="card-header bg-danger bg-opacity-10 py-3 px-4 border-bottom border-danger border-opacity-25">
+                <h6 class="mb-0 fw-bold text-danger">
+                  <i class="bx bx-trash me-2"></i>
+                  Zone dangereuse
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <p class="small text-danger mb-3">
+                  <i class="bx bx-warning me-1"></i>
+                  La suppression de cette réservation est définitive et irréversible.
+                </p>
+                <div class="d-grid">
+                  <form method="post" action="{{ path('app_reservation_delete', {'id': reservation.id}) }}" 
+                        onsubmit="return confirm('Êtes-vous absolument sûr de vouloir supprimer cette réservation ? Cette action ne peut pas être annulée.');">
+                    <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ reservation.id) }}">
+                    <button type="submit" class="btn btn-outline-danger btn-sm fw-semibold">
+                      <i class="bx bx-trash me-2"></i>
+                      Supprimer définitivement
+                    </button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            {% endif %}
+
+            <!-- Conseils -->
+            <div class="card border-0 shadow-sm rounded-4 mb-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-lightbulb text-warning me-2"></i>
+                  Conseils de saisie
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="small">
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-calendar text-primary me-1"></i>Date de réservation
+                    </div>
+                    <div class="text-muted">Vérifiez que la date et l'heure sont correctes</div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-user text-primary me-1"></i>Client
+                    </div>
+                    <div class="text-muted">Assurez-vous de sélectionner le bon client</div>
+                  </div>
+                  
+                  <div class="mb-3">
+                    <div class="fw-semibold text-dark mb-1">
+                      <i class="bx bx-package text-primary me-1"></i>Type et statut
+                    </div>
+                    <div class="text-muted">Choisissez le type et le statut appropriés</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Raccourcis -->
+            <div class="card border-0 shadow-sm rounded-4">
+              <div class="card-header bg-white py-3 px-4 border-bottom">
+                <h6 class="mb-0 fw-bold text-dark">
+                  <i class="bx bx-rocket text-success me-2"></i>
+                  Raccourcis
+                </h6>
+              </div>
+              <div class="card-body p-4">
+                <div class="d-grid gap-2">
+                  <button type="button" class="btn btn-sm btn-outline-primary" onclick="fillSampleData()">
+                    <i class="bx bx-data me-1"></i>Données d'exemple
+                  </button>
+                  <a href="{{ path('app_reservation_index') }}" class="btn btn-sm btn-outline-secondary">
+                    <i class="bx bx-list-ul me-1"></i>Toutes les réservations
+                  </a>
+                  <a href="{{ path('app_client_index') }}" class="btn btn-sm btn-outline-info">
+                    <i class="bx bx-user me-1"></i>Voir les clients
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- CSS personnalisé -->
+<style>
+.form-control:focus,
+.form-select:focus {
+  border-color: var(--bs-primary);
+  box-shadow: 0 0 0 0.2rem rgba(13, 110, 253, 0.25);
+  background-color: white;
+}
+
+.form-control-lg,
+.form-select-lg {
+  padding: 0.75rem 1rem;
+}
+
+.sticky-top {
+  top: 2rem !important;
+}
+
+@media (max-width: 991.98px) {
+  .sticky-top {
+    position: static !important;
+  }
+}
+
+/* Animation pour les cartes */
+.card {
+  transition: all 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+}
+</style>
+
+<!-- JavaScript pour les fonctionnalités -->
+<script>
+// Validation en temps réel
+document.addEventListener('DOMContentLoaded', function() {
+  const forms = document.querySelectorAll('.needs-validation');
+  
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+});
+
+// Fonction pour remplir avec des données d'exemple
+function fillSampleData() {
+  // Date de réservation - aujourd'hui
+  const dateField = document.querySelector('input[name*="dateReservation"]');
+  if (dateField) {
+    const now = new Date();
+    dateField.value = now.toISOString().slice(0, 16);
+  }
+  
+  // Type
+  const typeField = document.querySelector('select[name*="type"]');
+  if (typeField && typeField.options.length > 1) {
+    typeField.selectedIndex = 1; // Première option après le placeholder
+  }
+  
+  // Statut
+  const statusField = document.querySelector('select[name*="status"]');
+  if (statusField && statusField.options.length > 1) {
+    statusField.selectedIndex = 1; // Première option après le placeholder
+  }
+  
+  // Client
+  const clientField = document.querySelector('select[name*="client"]');
+  if (clientField && clientField.options.length > 1) {
+    clientField.selectedIndex = 1; // Premier client disponible
+  }
+}
+
+// Prévisualisation en temps réel
+document.querySelectorAll('input, textarea, select').forEach(field => {
+  field.addEventListener('input', function() {
+    console.log('Champ modifié:', this.name, this.value);
+  });
+});
+</script>
 {% endblock %}

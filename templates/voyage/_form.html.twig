@@ -1,4 +1,91 @@
-{{ form_start(form) }}
-    {{ form_widget(form) }}
-    <button class="btn">{{ button_label|default('Save') }}</button>
+{{ form_start(form, {'attr': {'class': 'needs-validation', 'novalidate': true}}) }}
+
+<div class="row g-4">
+  <!-- Destination -->
+  <div class="col-12">
+    <div class="form-group">
+      <label class="form-label fw-semibold text-dark mb-2">
+        <i class="bx bx-world text-primary me-1"></i>
+        Destination <span class="text-danger">*</span>
+      </label>
+      {{ form_widget(form.destination, {
+        'attr': {
+          'class': 'form-control form-control-lg border-0 bg-light rounded-3',
+          'placeholder': 'Entrez la destination du voyage',
+          'required': true
+        }
+      }) }}
+      <div class="form-text text-muted">
+        <i class="bx bx-info-circle me-1"></i>
+        Exemple: Paris, Londres, Dubai, La Mecque
+      </div>
+      <div class="invalid-feedback">
+        Veuillez saisir une destination valide.
+      </div>
+    </div>
+  </div>
+
+  <!-- Type de voyage -->
+  <div class="col-12">
+    <div class="form-group">
+      <label class="form-label fw-semibold text-dark mb-2">
+        <i class="bx bx-category text-primary me-1"></i>
+        Type de voyage <span class="text-danger">*</span>
+      </label>
+      {{ form_widget(form.typeVoyage, {
+        'attr': {
+          'class': 'form-select form-select-lg border-0 bg-light rounded-3',
+          'required': true
+        }
+      }) }}
+      <div class="form-text text-muted">
+        <i class="bx bx-info-circle me-1"></i>
+        Sélectionnez le type de voyage approprié
+      </div>
+      <div class="invalid-feedback">
+        Veuillez sélectionner un type de voyage.
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Boutons d'action -->
+<div class="row mt-5 pt-4 border-top">
+  <div class="col-12">
+    <div class="d-flex justify-content-between align-items-center">
+      <div class="text-muted small">
+        <i class="bx bx-info-circle me-1"></i>
+        Les champs marqués d'un <span class="text-danger">*</span> sont obligatoires
+      </div>
+      <div class="d-flex gap-2">
+        <a href="{{ path('app_voyage_index') }}" 
+           class="btn btn-outline-secondary rounded-3 px-4 py-2 fw-semibold">
+          <i class="bx bx-x me-2"></i>Annuler
+        </a>
+        <button type="submit" class="btn btn-primary shadow-sm rounded-3 px-4 py-2 fw-semibold">
+          <i class="bx bx-check me-2"></i>
+          {{ button_label|default('Créer le voyage') }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
 {{ form_end(form) }}
+
+<script>
+// Validation en temps réel
+document.addEventListener('DOMContentLoaded', function() {
+  const forms = document.querySelectorAll('.needs-validation');
+  
+  Array.from(forms).forEach(form => {
+    form.addEventListener('submit', event => {
+      if (!form.checkValidity()) {
+        event.preventDefault();
+        event.stopPropagation();
+      }
+      form.classList.add('was-validated');
+    }, false);
+  });
+});
+</script>
